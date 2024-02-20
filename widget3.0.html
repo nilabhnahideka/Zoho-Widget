@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&display=swap">
+
+    <title>Erdbaron Cost Calculator</title>
+    <style>
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background-color: #F1F1F1;
+            color: #3A3A3A;
+            padding: 20px;
+            margin: 0;
+            text-align: center;
+        }
+
+        h1 {
+            color: #D6AD53;
+            font-size: 36px;
+            margin-top: 0;
+            margin-bottom: 10px;
+            text-align: left;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: bold;
+        }
+
+        h2 {
+            color: #A58F6E;
+            margin-bottom: 20px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+        }
+
+        h3, h4 {
+            color: #A58F6E;
+            margin-bottom: 20px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 500;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: left;
+            border: 2px solid #D6AD53;
+            max-width: 2000px;
+            margin-bottom: auto;
+            width: 100%;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        label {
+            color: #3A3A3A;
+            margin-bottom: 8px;
+            display: block;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 500;
+        }
+
+        select,
+        input,
+        button {
+            width: calc(100% - 40px);
+            padding: 10px;
+            margin-bottom: 16px;
+            border: 1px solid #ccc;
+            border-radius: 20px;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+            margin-top: 16px;
+        }
+
+        
+
+        
+
+        button {
+            background-color: #D6AD53;
+            color: #fff;
+            cursor: pointer;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.05px;
+        }
+
+        button:hover {
+            background-color: #fff;
+            color: #D6AD53;
+            cursor: pointer;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.05px;
+            border-color: #D6AD53;
+            border-width: 2px;
+        }
+
+        .form-section {
+            background-color: #fff;
+            border: 1px solid #5d432c;
+            border-radius: 8px;
+            padding: 20px;
+            flex: 1;
+        }
+
+        #totalSection {
+            background-color: #fff;
+            border: 1px solid #5d432c;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+            text-align: left;
+            flex-basis: calc(33.33% - 20px);
+        }
+
+        .result-section {
+    margin-top: 20px;
+    padding: 20px;
+    font-weight: bold;
+    background-color: #fff;
+    border: 1px solid #5d432c;
+    border-radius: 8px;
+}
+
+.result-section h3 {
+    margin-top: auto;
+    margin-bottom: 10px;
+    color: #A58F6E;
+}
+
+.result-section p {
+    margin-bottom: 8px;
+    color: #3A3A3A;
+}
+        
+
+        
+        
+        
+    </style>
+</head>
+
+<body>
+    <h1><img src="https://erdbaron.com/wp-content/uploads/2021/02/Erdbaron.svg" alt="Erdbaron Logo" width="150" height="50"></h1>
+    <h2>Cost Calculator</h2>
+
+    <form id="costCalculatorForm">
+        <div class="form-section" id="materialSection">
+            <h3>Material</h3>
+            <label for="material">Material:</label>
+            <select id="material" name="material" required>
+                <option value="material1">Material 1</option>
+                <option value="material2">Material 2</option>
+                <option value="material3">Material 3</option>
+                <option value="material4">Material 4</option>
+                <option value="material5">Material 5</option>
+            </select>
+
+            <label for="given">Given:</label>
+            <select id="given" name="given" required>
+                <option value="volume">Volume</option>
+                <option value="mass">Mass</option>
+            </select>
+
+            <label for="wanted">Wanted:</label>
+            <select id="wanted" name="wanted" required>
+                <option value="volume">Volume</option>
+                <option value="mass">Mass</option>
+            </select>
+
+            <label for="amount">Amount:</label>
+            <input type="number" id="amount" name="amount" required>
+
+            <div class="result-section">
+                <h3>Results</h3>
+            <p id="densityResult"></p>
+            <p id="convertedAmountResult"></p></div>
+        </div>
+
+
+        <div class="form-section">
+            <h3>Time</h3>
+            <label for="numberOfVehicles">Number of Vehicles:</label>
+            <input type="number" id="numberOfVehicles" name="numberOfVehicles" required>
+
+            <label for="travelTime">Travel Time (minutes):</label>
+            <input type="number" id="travelTime" name="travelTime" required>
+
+            <label for="loadingTime">Loading Time (minutes):</label>
+            <input type="number" id="loadingTime" name="loadingTime" required>
+
+            <label for="unloadingTime">Unloading Time (minutes):</label>
+            <input type="number" id="unloadingTime" name="unloadingTime" required>
+
+            <label for="workingHours">Working Hours:</label>
+            <input type="number" id="workingHours" name="workingHours" required>
+
+            <div class="result-section">
+                <h3>Time Results</h3>
+                <p id="numberOfVehiclesResult"></p>
+                <p id="workingHoursResult"></p>
+                <p id="cycleTimeResult"></p>
+                <p id="numberOfToursResult"></p>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h3>Transport (Purchase)</h3>
+            <label for="vehicleType">Type of Vehicle:</label>
+            <select id="vehicleType" name="vehicleType" required>
+                <option value="3-Achser">3-Achser</option>
+                <option value="4-Achser">4-Achser</option>
+                <option value="Tandemzug">Tandemzug</option>
+                <option value="Schleppermulde">Schleppermulde</option>
+                <option value="Sattelzug">Sattelzug</option>
+            </select>
+
+            <div class="result-section">
+                <h3>Purchase Results</h3>
+                <p id="minVehiclePrice"></p>
+                <p id="maxVehiclePrice"></p>
+                <p id="vehicleWeight"></p>
+            </div>
+        </div>
+
+        
+
+        <div class="form-section">
+            <h3>Transport (Sales)</h3>
+            <div id="minMaxPricePerHour">
+                <p id="minVehiclePriceSales"></p>
+                <p id="maxVehiclePriceSales"></p>
+            </div>
+
+            <label for="actualPurchasePrice">Actual Purchase Price:</label>
+            <input type="number" id="actualPurchasePrice" name="actualPurchasePrice" required>
+
+            <label for="marginPercentage">Margin Percentage:</label>
+            <input type="number" id="marginPercentage" name="marginPercentage" required>
+
+            <div class="result-section">
+                <h3>Sales Results</h3>
+                <p id="finalPrice"></p>
+                <p id="totalPrice"></p>
+            </div>
+        </div>
+
+        <div class="form-section" id="disposalSection">
+            <h3>Disposal (Purchase)</h3>
+        
+            <label for="disposalMaterial"></label>
+            <p id="disposalMaterialInfo"></p> <!-- Corrected ID -->
+        
+            <label for="disposalAmount"></label>
+            <p id="disposalAmountInfo"></p> <!-- Corrected ID -->
+        
+            <label for="disposalPrice">Disposal Price per Unit:</label>
+            <input type="number" id="disposalPrice" name="disposalPrice" required>
+        
+            <label for="additionalCosts">Additional Costs (total):</label>
+            <input type="number" id="additionalCosts" name="additionalCosts" required>
+        
+            <div class="result-section">
+                <h3>Disposal Results</h3>
+                <p id="totalDisposalPrice"></p> <!-- Corrected ID -->
+            </div>
+        </div>
+
+        <!-- Disposal Sales Section -->
+<div class="form-section" id="disposalSalesSection">
+    <h3>Disposal (Sales)</h3>
+
+    <label for="marginDisposalSales">Margin Percentage:</label>
+    <input type="number" id="marginDisposalSales" name="marginDisposalSales" required>
+
+    
+
+    <!-- Set value attribute for the actual purchase price -->
+    <label for="actualPurchasePriceTransport">Actual Purchase Price of Vehicle (if included):</label>
+    <input type="number" id="actualPurchasePriceTransport" name="actualPurchasePriceTransport" value="" placeholder="Actual Purchase Price" disabled>
+
+    <div class="result-section">
+        <h3>Disposal Sales Results</h3>
+        <p id="disposalSalesPerUnit"></p>
+        <p id="disposalSalesResult"></p>
+    </div>
+</div>
+        
+
+        <div class="form-section" id="summarySection">
+            <h3>Summary</h3>
+            <!-- Existing summary content -->
+            <!-- New Include Transport option in the Summary Section -->
+<label for="includeTransportSummary">Final Price</label>
+<select id="includeTransportSummary" name="includeTransportSummary">
+    <option value="transportOnly">Transport Only</option>
+    <option value="disposalOnly">Disposal Only</option>
+    <option value="both">Both</option>
+    
+</select>
+            <h4>Material</h4>
+            <p id="densityResultSummary"></p>
+            <p id="disposalMaterialInfoSummary"></p>
+            <p id="convertedAmountResultSummary"></p>
+            <h4>Vehicle</h4>
+            <p id="minVehiclePriceSummary"></p>
+            <p id="maxVehiclePriceSummary"></p>
+            <p id="vehicleWeightSummary"></p>
+            <p id="numberOfVehiclesResultSummary"></p>
+            <h4>Time</h4>
+            <p id="workingHoursResultSummary"></p>
+            <p id="cycleTimeResultSummary"></p>
+            <p id="numberOfToursResultSummary"></p>
+            
+            <p id="disposalAmountInfoSummary"></p>
+            <p id="totalDisposalPriceSummary"></p>
+            <p id="disposalSalesResultSummary"></p>
+    
+            <p id="totalSalesAmountSummary"></p>
+            <p id="totalDisposalSalesAmountSummary"></p>
+
+
+<div class="result-section">
+    <h3>Final Price Results</h3>
+    <p id="finalPricePerUnit"></p>
+    <p id="totalFinalPrice"></p>
+</div>
+<button onclick="copySummaryToClipboard()">Copy Summary</button>
+
+
+<div class="button-wrapper">
+    <button type="button" onclick="calculateAll()">Calculate All</button>
+</div>
+
+
+        <script>
+            let convertedAmount;
+            let convertedAmountLabel;
+
+            function calculateAll() {
+                showMaterialResults();
+                showVehicleResults();
+                showTimeResults();
+                showSalesResults();
+                showDisposalResults();
+                showDisposalSalesResults();
+                updateSummary();
+                calculateTotal();
+               
+                
+            }
+
+            function showMaterialResults() {
+                const material = document.getElementById('material').value;
+                const given = document.getElementById('given').value;
+                const wanted = document.getElementById('wanted').value;
+                const amount = parseFloat(document.getElementById('amount').value);
+
+                const materialDensities = {
+                    "material1": 1.2,
+                    "material2": 1.5,
+                    "material3": 1.8,
+                    "material4": 2,
+                    "material5": 2.5
+                };
+                const density = materialDensities[material];
+
+                convertedAmountLabel = '';
+                convertedAmount = 0;
+
+                if (given === 'volume' && wanted === 'volume') {
+                    convertedAmountLabel = 'Volume';
+                    convertedAmount = amount;
+                } else if (given === 'volume' && wanted === 'mass') {
+                    convertedAmountLabel = 'Mass';
+                    convertedAmount = amount * density;
+                } else if (given === 'mass' && wanted === 'volume') {
+                    convertedAmountLabel = 'Volume';
+                    convertedAmount = amount / density;
+                } else if (given === 'mass' && wanted === 'mass') {
+                    convertedAmountLabel = 'Mass';
+                    convertedAmount = amount;
+                }
+
+                const unit = wanted === 'mass' ? 'Tons' : 'Cubic Meters';
+
+                document.getElementById('densityResult').innerHTML = `Density: ${density} t/m³`;
+                document.getElementById('convertedAmountResult').innerHTML = `${convertedAmountLabel}: ${convertedAmount.toFixed(2)} (${unit})`;
+            }
+
+            function showVehicleResults() {
+                const vehicleType = document.getElementById('vehicleType').value;
+
+                const vehicleInfo = {
+                    "3-Achser": { weight: 14, stundensatz: 65, vk: 75, proMinute: 1.25, beEntladezeit: 15, minPrice: 10.00, maxPrice: 12.00 },
+                    "4-Achser": { weight: 18, stundensatz: 75, vk: 85, proMinute: 1.416666667, beEntladezeit: 17, minPrice: 20.00, maxPrice: 24.00 },
+                    "Tandemzug": { weight: 21, stundensatz: 82, vk: 92, proMinute: 1.533333333, beEntladezeit: 22, minPrice: 30.00, maxPrice: 36.00 },
+                    "Schleppermulde": { weight: 23, minPrice: 40.00, maxPrice: 48.00 },
+                    "Sattelzug": { weight: 25, stundensatz: 82, vk: 92, proMinute: 1.533333333, beEntladezeit: 22, minPrice: 50.00, maxPrice: 60.00 }
+                };
+
+                const minPrice = vehicleInfo[vehicleType].minPrice;
+                const maxPrice = vehicleInfo[vehicleType].maxPrice
+                const weight = vehicleInfo[vehicleType].weight;
+
+                document.getElementById('minVehiclePrice').innerHTML = `Min Vehicle Price: €${minPrice.toFixed(2)}`;
+                document.getElementById('maxVehiclePrice').innerHTML = `Max Vehicle Price: €${maxPrice.toFixed(2)}`;
+                document.getElementById('vehicleWeight').innerHTML = `Vehicle Capacity: ${weight} tons`;
+            }
+
+            function showTimeResults() {
+                const numberOfVehicles = document.getElementById('numberOfVehicles').value;
+                const workingHours = document.getElementById('workingHours').value;
+                const travelTime = parseFloat(document.getElementById('travelTime').value);
+                const loadingTime = parseFloat(document.getElementById('loadingTime').value);
+                const unloadingTime = parseFloat(document.getElementById('unloadingTime').value);
+
+                const cycleTime = 2 * travelTime + loadingTime + unloadingTime;
+
+                let toursConvertedAmount = convertedAmount;
+                if (convertedAmountLabel === 'Mass') {
+                    toursConvertedAmount = convertedAmount / density;
+                }
+
+                const vehicleType = document.getElementById('vehicleType').value;
+                const vehicleInfo = {
+                    "3-Achser": { weight: 14 },
+                    "4-Achser": { weight: 18 },
+                    "Tandemzug": { weight: 21 },
+                    "Schleppermulde": { weight: 23 },
+                    "Sattelzug": { weight: 25 }
+                };
+                const weightOfSelectedVehicle = vehicleInfo[vehicleType].weight;
+
+                // Corrected formula for number of tours
+                const numberOfTours = 2 * toursConvertedAmount / weightOfSelectedVehicle;
+
+                document.getElementById('numberOfVehiclesResult').innerHTML = `Number of Vehicles: ${numberOfVehicles}`;
+                document.getElementById('workingHoursResult').innerHTML = `Working Hours≈ ${workingHours}`;
+                document.getElementById('cycleTimeResult').innerHTML = `Cycle Time≈ ${cycleTime.toFixed(2)} minutes`;
+                document.getElementById('numberOfToursResult').innerHTML = `Number of Tours≈ ${numberOfTours.toFixed(2)}`;
+            }
+
+            function showSalesResults() {
+                const vehicleType = document.getElementById('vehicleType').value;
+
+                const vehicleInfo = {
+                    "3-Achser": { minPrice: 10.00, maxPrice: 12.00 },
+                    "4-Achser": { minPrice: 20.00, maxPrice: 24.00 },
+                    "Tandemzug": { minPrice: 30.00, maxPrice: 36.00 },
+                    "Schleppermulde": { minPrice: 40.00, maxPrice: 48.00 },
+                    "Sattelzug": { minPrice: 50.00, maxPrice: 60.00 }
+                };
+
+                const minPrice = vehicleInfo[vehicleType].minPrice;
+                const maxPrice = vehicleInfo[vehicleType].maxPrice;
+
+                document.getElementById('minVehiclePriceSales').innerHTML = `Min Vehicle Price: €${minPrice.toFixed(2)}`;
+                document.getElementById('maxVehiclePriceSales').innerHTML = `Max Vehicle Price: €${maxPrice.toFixed(2)}`;
+
+                const actualPurchasePrice = parseFloat(document.getElementById('actualPurchasePrice').value);
+                const marginPercentage = parseFloat(document.getElementById('marginPercentage').value);
+
+                const marginAmount = actualPurchasePrice * (marginPercentage / 100);
+                const salesPerAmount = actualPurchasePrice + marginAmount;
+                const totalSalesResult = salesPerAmount * convertedAmount;
+
+
+                document.getElementById('finalPrice').innerHTML = `Sales per unit: €${salesPerAmount.toFixed(2)}`;
+                document.getElementById('totalPrice').innerHTML = `Total Sales: €${totalSalesResult.toFixed(2)}`;
+            }
+
+
+            function showDisposalResults() {
+        // Retrieve material and amount from the Material section
+        const material = document.getElementById('material').value;
+        const amount = parseFloat(document.getElementById('amount').value);
+
+        // Display material and amount in the Disposal section
+        document.getElementById('disposalMaterialInfo').innerHTML = `Selected Material: ${material}`;
+        document.getElementById('disposalAmountInfo').innerHTML = `Amount Entered: ${amount.toFixed(2)} tons`;
+
+        // Retrieve disposal price and additional costs
+        const disposalPrice = parseFloat(document.getElementById('disposalPrice').value);
+        const additionalCosts = parseFloat(document.getElementById('additionalCosts').value);
+
+        // Calculate total disposal price
+        const totalDisposalPrice = amount * disposalPrice + additionalCosts;
+
+        // Display total disposal price
+        document.getElementById('totalDisposalPrice').innerHTML = `Total Disposal Price: €${totalDisposalPrice.toFixed(2)}`;
+    }
+
+    function showDisposalSalesResults() {
+    const marginDisposalSales = parseFloat(document.getElementById('marginDisposalSales').value);
+    const includeTransport = document.getElementById('includeTransportSummary').value;
+    const totalDisposalPrice = parseFloat(document.getElementById('totalDisposalPrice').innerText.replace('Total Disposal Price: €', ''));
+
+    // Set the value of the actualPurchasePriceTransport input field
+    document.getElementById('actualPurchasePriceTransport').value = document.getElementById('actualPurchasePrice').value;
+
+    // Calculate margin amount and disposal sales price per unit
+    const marginAmountDisposalSales = totalDisposalPrice * (marginDisposalSales / 100);
+    const disposalSalesPerUnit = (totalDisposalPrice + marginAmountDisposalSales) / convertedAmount;
+
+    
+    const totalDisposalSalesPrice = disposalSalesPerUnit * convertedAmount;
+
+    // Display disposal sales price including transport
+    document.getElementById('disposalSalesPerUnit').innerHTML = `Disposal Sales Per Unit: €${disposalSalesPerUnit.toFixed(2)}`;
+    document.getElementById('disposalSalesResult').innerHTML = `Disposal Sales Result: €${totalDisposalSalesPrice.toFixed(2)}`;
+}
+
+
+
+
+            // New function to update the Summary section
+            function updateSummary() {
+    // Update the Summary section with calculated results
+    document.getElementById('convertedAmountResultSummary').innerHTML = document.getElementById('convertedAmountResult').innerHTML;
+    document.getElementById('vehicleWeightSummary').innerHTML = document.getElementById('vehicleWeight').innerHTML;
+    document.getElementById('numberOfVehiclesResultSummary').innerHTML = document.getElementById('numberOfVehiclesResult').innerHTML;
+    document.getElementById('workingHoursResultSummary').innerHTML = document.getElementById('workingHoursResult').innerHTML;
+    document.getElementById('cycleTimeResultSummary').innerHTML = document.getElementById('cycleTimeResult').innerHTML;
+    document.getElementById('numberOfToursResultSummary').innerHTML = document.getElementById('numberOfToursResult').innerHTML;
+    
+    document.getElementById('finalPriceSummary').innerHTML = document.getElementById('finalPrice').innerHTML;
+    document.getElementById('disposalMaterialInfoSummary').innerHTML = document.getElementById('disposalMaterialInfo').innerHTML;
+    
+    // Remaining lines for other information in the summary
+
+    // Retrieve actual purchase price, margin percentage, and converted amount
+    const actualPurchasePrice = parseFloat(document.getElementById('actualPurchasePrice').value);
+    const marginPercentage = parseFloat(document.getElementById('marginPercentage').value);
+    const convertedAmount = parseFloat(document.getElementById('amount').value);
+
+    // Calculate total sales amount
+    const marginAmount = actualPurchasePrice * (marginPercentage / 100);
+    const salesPerAmount = actualPurchasePrice + marginAmount;
+    const totalSalesAmount = salesPerAmount * convertedAmount;
+
+    // Display total sales amount
+    document.getElementById('totalSalesAmountSummary').innerHTML = `Total Sales Amount: €${totalSalesAmount.toFixed(2)}`;
+
+            // Retrieve total disposal price, margin disposal sales, and include transport value
+            const totalDisposalPrice = parseFloat(document.getElementById('totalDisposalPrice').innerText.replace('Total Disposal Price: €', ''));
+            const marginDisposalSales = parseFloat(document.getElementById('marginDisposalSales').value);
+            const includeTransport = document.getElementById('includeTransport').value;
+
+            
+
+
+    }
+
+    document.getElementById('includeTransportSummary').addEventListener('change', function () {
+    updateFinalPriceDisplay();
+    calculateAll();
+});
+
+            
+
+            function updateFinalPriceDisplay() {
+    const includeTransportOption = document.getElementById('includeTransportSummary').value;
+
+    if (includeTransportOption === 'disposalOnly') {
+        document.getElementById('finalPricePerUnit').innerHTML = document.getElementById('disposalSalesPerUnit').innerHTML;
+        document.getElementById('totalFinalPrice').innerHTML = document.getElementById('disposalSalesResult').innerHTML;
+    } else if (includeTransportOption === 'transportOnly') {
+        document.getElementById('finalPricePerUnit').innerHTML = document.getElementById('finalPrice').innerHTML;
+        document.getElementById('totalFinalPrice').innerHTML = document.getElementById('totalPrice').innerHTML;
+    } else if (includeTransportOption === 'both') {
+        // Handle both scenario
+        const disposalSalesPerUnit = parseFloat(document.getElementById('disposalSalesPerUnit').innerText.replace('Disposal Sales Per Unit: €', ''));
+        const finalPrice = parseFloat(document.getElementById('finalPrice').innerText.replace('Sales per unit: €', ''));
+
+        // Calculate the addition of per unit values
+        const bothPerUnit = disposalSalesPerUnit + finalPrice;
+
+        // Display the addition of per unit values
+        document.getElementById('finalPricePerUnit').innerHTML = `Per Unit: €${bothPerUnit.toFixed(2)}`;
+
+        // Retrieve and calculate the addition of total values
+        const totalDisposalSales = parseFloat(document.getElementById('disposalSalesResult').innerText.replace('Disposal Sales Result: €', ''));
+        const totalPrice = parseFloat(document.getElementById('totalPrice').innerText.replace('Total Sales: €', ''));
+        const bothTotal = totalDisposalSales + totalPrice;
+
+        // Display the addition of total values
+        document.getElementById('totalFinalPrice').innerHTML = `Total: €${bothTotal.toFixed(2)}`;
+    }
+}
+
+// Initial call to set the initial display based on the default selected option
+updateFinalPriceDisplay();
+
+function copySummaryToClipboard() {
+    // Array of element IDs and their corresponding labels to copy to the clipboard
+    const elementsToCopy = [
+    { id: 'convertedAmountResultSummary', label: '' },
+        { id: 'vehicleWeightSummary', label: '' },
+        { id: 'numberOfVehiclesResultSummary', label: '' },
+        { id: 'workingHoursResultSummary', label: '' },
+        { id: 'cycleTimeResultSummary', label: '' },
+        { id: 'numberOfToursResultSummary', label: '' },
+        { id: 'disposalSalesPerUnit', label: '' },
+        { id: 'disposalSalesResult', label: '' },
+    ];
+
+    // Select the content of the specified elements
+    const summaryContent = elementsToCopy.map(({ id, label }) => {
+        const element = document.getElementById(id);
+        return `${label}: ${element.innerText}`;
+    }).join('\n');
+
+    // Create a temporary textarea element
+    const textarea = document.createElement('textarea');
+    textarea.value = summaryContent;
+
+    // Append the textarea to the body
+    document.body.appendChild(textarea);
+
+    // Select the content of the textarea
+    textarea.select();
+    textarea.setSelectionRange(0, 99999); /* For mobile devices */
+
+    // Copy the selected text to the clipboard
+    document.execCommand('copy');
+
+    // Remove the temporary textarea
+    document.body.removeChild(textarea);
+
+    // Optionally, provide user feedback (you can customize this)
+    alert('Summary copied to clipboard!');
+}
+
+        </script>
+    </form>
+</body>
+
+</html>
