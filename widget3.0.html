@@ -157,11 +157,15 @@
             <h3>Material</h3>
             <label for="material">Material:</label>
             <select id="material" name="material" required>
-                <option value="material1">Material 1</option>
-                <option value="material2">Material 2</option>
-                <option value="material3">Material 3</option>
-                <option value="material4">Material 4</option>
-                <option value="material5">Material 5</option>
+                <option value="material1">Oberboden (Humus)</option>
+                <option value="material2">Boden (Sand)</option>
+                <option value="material3">Boden (Lehm)</option>
+                <option value="material4">Boden (Ton)</option>
+                <option value="material5">Boden (Schluff)</option>
+                <option value="material6">Schotter</option>
+                <option value="material7">Kies</option>
+                <option value="material8">Sand</option>
+                <option value="material9">Beton (Abbruch)</option>
             </select>
 
             <label for="given">Given:</label>
@@ -365,11 +369,15 @@
                 const amount = parseFloat(document.getElementById('amount').value);
 
                 const materialDensities = {
-                    "material1": 1.2,
-                    "material2": 1.5,
-                    "material3": 1.8,
-                    "material4": 2,
-                    "material5": 2.5
+                    "material1": 1.35,
+                    "material2": 1.57,
+                    "material3": 1.55,
+                    "material4": 1.80,
+                    "material5": 1.50,
+                    "material6": 1.65,
+                    "material7": 1.60,
+                    "material8": 1.50,
+                    "material9": 2.10
                 };
                 const density = materialDensities[material];
 
