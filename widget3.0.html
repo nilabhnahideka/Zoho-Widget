@@ -442,9 +442,9 @@
                 const vehicleInfo = {
                     "3-Achser": { weight: 14 },
                     "4-Achser": { weight: 18 },
-                    "Tandemzug": { weight: 21 },
-                    "Schleppermulde": { weight: 23 },
-                    "Sattelzug": { weight: 25 }
+                    "5-Achser": { weight: 25 },
+                    "Hängerzug": { weight: 30 },
+                    "Muldenkipper": { weight: 23 }
                 };
                 const weightOfSelectedVehicle = vehicleInfo[vehicleType].weight;
 
@@ -461,11 +461,11 @@
                 const vehicleType = document.getElementById('vehicleType').value;
 
                 const vehicleInfo = {
-                    "3-Achser": { minPrice: 10.00, maxPrice: 12.00 },
-                    "4-Achser": { minPrice: 20.00, maxPrice: 24.00 },
-                    "Tandemzug": { minPrice: 30.00, maxPrice: 36.00 },
-                    "Schleppermulde": { minPrice: 40.00, maxPrice: 48.00 },
-                    "Sattelzug": { minPrice: 50.00, maxPrice: 60.00 }
+                    "3-Achser": { minPrice: 67.50, maxPrice: 72.50 },
+                    "4-Achser": { minPrice: 77.50, maxPrice: 82.50 },
+                    "5-Achser": { minPrice: 87.50, maxPrice: 92.50 },
+                    "Hängerzug": { minPrice: 87.50, maxPrice: 92.50 },
+                    "Muldenkipper": { minPrice: 72.50, maxPrice: 77.50 }
                 };
 
                 const minPrice = vehicleInfo[vehicleType].minPrice;
