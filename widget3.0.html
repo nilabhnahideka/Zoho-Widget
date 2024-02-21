@@ -222,9 +222,9 @@
             <select id="vehicleType" name="vehicleType" required>
                 <option value="3-Achser">3-Achser</option>
                 <option value="4-Achser">4-Achser</option>
-                <option value="Tandemzug">Tandemzug</option>
-                <option value="Schleppermulde">Schleppermulde</option>
-                <option value="Sattelzug">Sattelzug</option>
+                <option value="5-Achser">5-Achser</option>
+                <option value="Hängerzug">Hängerzug</option>
+                <option value="Muldenkipper">Muldenkipper</option>
             </select>
 
             <div class="result-section">
@@ -408,11 +408,11 @@
                 const vehicleType = document.getElementById('vehicleType').value;
 
                 const vehicleInfo = {
-                    "3-Achser": { weight: 14, stundensatz: 65, vk: 75, proMinute: 1.25, beEntladezeit: 15, minPrice: 10.00, maxPrice: 12.00 },
-                    "4-Achser": { weight: 18, stundensatz: 75, vk: 85, proMinute: 1.416666667, beEntladezeit: 17, minPrice: 20.00, maxPrice: 24.00 },
-                    "Tandemzug": { weight: 21, stundensatz: 82, vk: 92, proMinute: 1.533333333, beEntladezeit: 22, minPrice: 30.00, maxPrice: 36.00 },
-                    "Schleppermulde": { weight: 23, minPrice: 40.00, maxPrice: 48.00 },
-                    "Sattelzug": { weight: 25, stundensatz: 82, vk: 92, proMinute: 1.533333333, beEntladezeit: 22, minPrice: 50.00, maxPrice: 60.00 }
+                    "3-Achser": { weight: 14, stundensatz: 65, vk: 75, proMinute: 1.25, beEntladezeit: 15, minPrice: 67.50, maxPrice: 72.50 },
+                    "4-Achser": { weight: 18, stundensatz: 75, vk: 85, proMinute: 1.416666667, beEntladezeit: 17, minPrice: 77.50, maxPrice: 82.50 },
+                    "5-Achser": { weight: 25, stundensatz: 82, vk: 92, proMinute: 1.533333333, beEntladezeit: 22, minPrice: 87.50, maxPrice: 92.50 },
+                    "Hängerzug": { weight: 30, minPrice: 87.50, maxPrice: 92.50 },
+                    "Muldenkipper": { weight: 23, stundensatz: 82, vk: 92, proMinute: 1.533333333, beEntladezeit: 22, minPrice: 72.50, maxPrice: 77.50 }
                 };
 
                 const minPrice = vehicleInfo[vehicleType].minPrice;
