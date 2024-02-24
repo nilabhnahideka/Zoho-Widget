@@ -408,11 +408,11 @@
                 const vehicleType = document.getElementById('vehicleType').value;
 
                 const vehicleInfo = {
-                    "3-Achser": { weight: 14, stundensatz: 65, vk: 75, proMinute: 1.25, beEntladezeit: 15, minPrice: 67.50, maxPrice: 72.50 },
+                    "3-Achser": { weight: 12, stundensatz: 65, vk: 75, proMinute: 1.25, beEntladezeit: 15, minPrice: 67.50, maxPrice: 72.50 },
                     "4-Achser": { weight: 18, stundensatz: 75, vk: 85, proMinute: 1.416666667, beEntladezeit: 17, minPrice: 77.50, maxPrice: 82.50 },
                     "5-Achser": { weight: 25, stundensatz: 82, vk: 92, proMinute: 1.533333333, beEntladezeit: 22, minPrice: 87.50, maxPrice: 92.50 },
-                    "Hängerzug": { weight: 30, minPrice: 87.50, maxPrice: 92.50 },
-                    "Muldenkipper": { weight: 23, stundensatz: 82, vk: 92, proMinute: 1.533333333, beEntladezeit: 22, minPrice: 72.50, maxPrice: 77.50 }
+                    "Hängerzug": { weight: 23, minPrice: 87.50, maxPrice: 92.50 },
+                    "Muldenkipper": { weight: 24, stundensatz: 82, vk: 92, proMinute: 1.533333333, beEntladezeit: 22, minPrice: 72.50, maxPrice: 77.50 }
                 };
 
                 const minPrice = vehicleInfo[vehicleType].minPrice;
@@ -440,11 +440,11 @@
 
                 const vehicleType = document.getElementById('vehicleType').value;
                 const vehicleInfo = {
-                    "3-Achser": { weight: 14 },
+                    "3-Achser": { weight: 12 },
                     "4-Achser": { weight: 18 },
                     "5-Achser": { weight: 25 },
-                    "Hängerzug": { weight: 30 },
-                    "Muldenkipper": { weight: 23 }
+                    "Hängerzug": { weight: 23 },
+                    "Muldenkipper": { weight: 24 }
                 };
                 const weightOfSelectedVehicle = vehicleInfo[vehicleType].weight;
 
