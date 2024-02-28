@@ -6,9 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&display=swap">
-
+    <script src="./lib/ZohoCrmHelper.js"></script>
+    <script src="./lib/ZohoEmbeddedAppSDK.min.js"></script>
+    <script src="./lib/ZSDK.js"></script>
+    <script src="./custom.js"></script>
+    <script src="./jquery-min.js"></script>
     <title>Erdbaron Cost Calculator</title>
-    <style>
+    <script type="text/javascript">
+            initializeWidget();
+    </script>
+    <style>     
         body {
             font-family: 'DM Sans', sans-serif;
             background-color: #F1F1F1;
@@ -345,149 +352,167 @@
 </div>
 
 
-        <script>
-            let convertedAmount;
-            let convertedAmountLabel;
+<script>
+    let convertedAmount;
+    let convertedAmountLabel;
 
-            function calculateAll() {
-                showMaterialResults();
-                showVehicleResults();
-                showTimeResults();
-                showSalesResults();
-                showDisposalResults();
-                showDisposalSalesResults();
-                updateSummary();
-                calculateTotal();
-               
+    function calculateAll() {
+        showMaterialResults();
+        showVehicleResults();
+        showTimeResults();
+        showSalesResults();
+        showDisposalResults();
+        showDisposalSalesResults();
+        updateSummary();
+        calculateTotal();
+    }
+
+    function showMaterialResults() {
+        const material = document.getElementById('material').value;
+        const given = document.getElementById('given').value;
+        const wanted = document.getElementById('wanted').value;
+        const amount = parseFloat(document.getElementById('amount').value);
+
+        const materialDensities = {
+            "material1": 1.35,
+            "material2": 1.57,
+            "material3": 1.55,
+            "material4": 1.80,
+            "material5": 1.50,
+            "material6": 1.65,
+            "material7": 1.60,
+            "material8": 1.50,
+            "material9": 2.10
+        };
+
+    //let density;  // Declare density here
+        const density = materialDensities[material];
+        let convertedAmountLabel = '';
+        
+
+        if (given === 'volume' && wanted === 'volume') {
+            convertedAmountLabel = 'Volume';
+        //density = materialDensities[material];  // Assign value here
+            convertedAmount = amount;
+        } else if (given === 'volume' && wanted === 'mass') {
+            convertedAmountLabel = 'Mass';
+            //density = materialDensities[material];  // Assign value here
+            convertedAmount = amount * density;
+        } else if (given === 'mass' && wanted === 'volume') {
+            convertedAmountLabel = 'Volume';
+            //density = materialDensities[material];  // Assign value here
+            convertedAmount = amount / density;
+        } else if (given === 'mass' && wanted === 'mass') {
+            convertedAmountLabel = 'Mass';
+            //density = materialDensities[material];  // Assign value here
+            convertedAmount = amount;
+        } else {
+        // Handle the case where given and wanted are not handled explicitly
+            console.error("Unsupported conversion units");
+            return;
+        }
+
+        const unit = wanted === 'mass' ? 'Tons' : 'Cubic Meters';
+
+        document.getElementById('densityResult').innerHTML = `Density: ${density} kg/m³`;
+        document.getElementById('convertedAmountResult').innerHTML = `${convertedAmountLabel}: ${convertedAmount.toFixed(2)} (${unit})`;
+    }
+
+    function showVehicleResults() {
+        const vehicleType = document.getElementById('vehicleType').value;
+        
+
+        const vehicleInfo = {
+            "3-Achser": { weight: 12, stundensatz: 65, vk: 75, proMinute: 1.25, beEntladezeit: 15, minPrice: 67.50, maxPrice: 72.50 },
+            "4-Achser": { weight: 18, stundensatz: 75, vk: 85, proMinute: 1.416666667, beEntladezeit: 17, minPrice: 77.50, maxPrice: 82.50 },
+            "5-Achser": { weight: 25, stundensatz: 82, vk: 92, proMinute: 1.533333333, beEntladezeit: 22, minPrice: 87.50, maxPrice: 92.50 },
+            "Hängerzug": { weight: 23, minPrice: 87.50, maxPrice: 92.50 },
+            "Muldenkipper": { weight: 24, stundensatz: 82, vk: 92, proMinute: 1.533333333, beEntladezeit: 22, minPrice: 72.50, maxPrice: 77.50 }
+        };
+
+        const minPrice = vehicleInfo[vehicleType].minPrice;
+        const maxPrice = vehicleInfo[vehicleType].maxPrice
+        const weight = vehicleInfo[vehicleType].weight;
+
+        document.getElementById('minVehiclePrice').innerHTML = `Min Vehicle Price: €${minPrice.toFixed(2)}`;
+        document.getElementById('maxVehiclePrice').innerHTML = `Max Vehicle Price: €${maxPrice.toFixed(2)}`;
+        document.getElementById('vehicleWeight').innerHTML = `Vehicle Capacity: ${weight} tons`;
+    }
+
+    function showTimeResults() {
+        const numberOfVehicles = document.getElementById('numberOfVehicles').value;
+        const workingHours = document.getElementById('workingHours').value;
+        const travelTime = parseFloat(document.getElementById('travelTime').value);
+        const loadingTime = parseFloat(document.getElementById('loadingTime').value);
+        const unloadingTime = parseFloat(document.getElementById('unloadingTime').value);
+
+        const cycleTime = 2 * travelTime + loadingTime + unloadingTime;
                 
-            }
 
-            function showMaterialResults() {
-                const material = document.getElementById('material').value;
-                const given = document.getElementById('given').value;
-                const wanted = document.getElementById('wanted').value;
-                const amount = parseFloat(document.getElementById('amount').value);
+        let toursConvertedAmount = convertedAmount;
+        if (convertedAmountLabel === 'Mass') {
+            toursConvertedAmount = convertedAmount / density;
+        }
+        else {
+            toursConvertedAmount = convertedAmount;
+        }
+                
 
-                const materialDensities = {
-                    "material1": 1.35,
-                    "material2": 1.57,
-                    "material3": 1.55,
-                    "material4": 1.80,
-                    "material5": 1.50,
-                    "material6": 1.65,
-                    "material7": 1.60,
-                    "material8": 1.50,
-                    "material9": 2.10
-                };
-                const density = materialDensities[material];
+        const vehicleType = document.getElementById('vehicleType').value;
+        const vehicleInfo = {
+            "3-Achser": { weight: 12 },
+            "4-Achser": { weight: 18 },
+            "5-Achser": { weight: 25 },
+            "Hängerzug": { weight: 23 },
+            "Muldenkipper": { weight: 24 }
+        };
+        const weightOfSelectedVehicle = vehicleInfo[vehicleType].weight;
 
-                convertedAmountLabel = '';
-                convertedAmount = 0;
 
-                if (given === 'volume' && wanted === 'volume') {
-                    convertedAmountLabel = 'Volume';
-                    convertedAmount = amount;
-                } else if (given === 'volume' && wanted === 'mass') {
-                    convertedAmountLabel = 'Mass';
-                    convertedAmount = amount * density;
-                } else if (given === 'mass' && wanted === 'volume') {
-                    convertedAmountLabel = 'Volume';
-                    convertedAmount = amount / density;
-                } else if (given === 'mass' && wanted === 'mass') {
-                    convertedAmountLabel = 'Mass';
-                    convertedAmount = amount;
-                }
-
-                const unit = wanted === 'mass' ? 'Tons' : 'Cubic Meters';
-
-                document.getElementById('densityResult').innerHTML = `Density: ${density} kg/m³`;
-                document.getElementById('convertedAmountResult').innerHTML = `${convertedAmountLabel}: ${convertedAmount.toFixed(2)} (${unit})`;
-            }
-
-            function showVehicleResults() {
-                const vehicleType = document.getElementById('vehicleType').value;
-
-                const vehicleInfo = {
-                    "3-Achser": { weight: 12, stundensatz: 65, vk: 75, proMinute: 1.25, beEntladezeit: 15, minPrice: 67.50, maxPrice: 72.50 },
-                    "4-Achser": { weight: 18, stundensatz: 75, vk: 85, proMinute: 1.416666667, beEntladezeit: 17, minPrice: 77.50, maxPrice: 82.50 },
-                    "5-Achser": { weight: 25, stundensatz: 82, vk: 92, proMinute: 1.533333333, beEntladezeit: 22, minPrice: 87.50, maxPrice: 92.50 },
-                    "Hängerzug": { weight: 23, minPrice: 87.50, maxPrice: 92.50 },
-                    "Muldenkipper": { weight: 24, stundensatz: 82, vk: 92, proMinute: 1.533333333, beEntladezeit: 22, minPrice: 72.50, maxPrice: 77.50 }
-                };
-
-                const minPrice = vehicleInfo[vehicleType].minPrice;
-                const maxPrice = vehicleInfo[vehicleType].maxPrice
-                const weight = vehicleInfo[vehicleType].weight;
-
-                document.getElementById('minVehiclePrice').innerHTML = `Min Vehicle Price: €${minPrice.toFixed(2)}`;
-                document.getElementById('maxVehiclePrice').innerHTML = `Max Vehicle Price: €${maxPrice.toFixed(2)}`;
-                document.getElementById('vehicleWeight').innerHTML = `Vehicle Capacity: ${weight} tons`;
-            }
-
-            function showTimeResults() {
-                const numberOfVehicles = document.getElementById('numberOfVehicles').value;
-                const workingHours = document.getElementById('workingHours').value;
-                const travelTime = parseFloat(document.getElementById('travelTime').value);
-                const loadingTime = parseFloat(document.getElementById('loadingTime').value);
-                const unloadingTime = parseFloat(document.getElementById('unloadingTime').value);
-
-                const cycleTime = 2 * travelTime + loadingTime + unloadingTime;
-
-                let toursConvertedAmount = convertedAmount;
-                if (convertedAmountLabel === 'Mass') {
-                    toursConvertedAmount = convertedAmount / density;
-                }
-
-                const vehicleType = document.getElementById('vehicleType').value;
-                const vehicleInfo = {
-                    "3-Achser": { weight: 12 },
-                    "4-Achser": { weight: 18 },
-                    "5-Achser": { weight: 25 },
-                    "Hängerzug": { weight: 23 },
-                    "Muldenkipper": { weight: 24 }
-                };
-                const weightOfSelectedVehicle = vehicleInfo[vehicleType].weight;
+            
 
                 // Corrected formula for number of tours
-                const numberOfTours = 2 * toursConvertedAmount / weightOfSelectedVehicle;
+        const numberOfTours = 2 * Math.ceil( toursConvertedAmount / weightOfSelectedVehicle);
+        console.log('weight of selected vehicle',weightOfSelectedVehicle)
+        console.log('toursConvertedAmount',toursConvertedAmount)
+        console.log('numberOfTours:', numberOfTours);
+        document.getElementById('numberOfVehiclesResult').innerHTML = `Number of Vehicles: ${numberOfVehicles}`;
+        document.getElementById('workingHoursResult').innerHTML = `Working Hours≈ ${workingHours}`;
+        document.getElementById('cycleTimeResult').innerHTML = `Cycle Time≈ ${cycleTime.toFixed(2)} minutes`;
+        document.getElementById('numberOfToursResult').innerHTML = `Number of Tours≈ ${numberOfTours.toFixed(2)}`;
+    }
 
-                document.getElementById('numberOfVehiclesResult').innerHTML = `Number of Vehicles: ${numberOfVehicles}`;
-                document.getElementById('workingHoursResult').innerHTML = `Working Hours≈ ${workingHours}`;
-                document.getElementById('cycleTimeResult').innerHTML = `Cycle Time≈ ${cycleTime.toFixed(2)} minutes`;
-                document.getElementById('numberOfToursResult').innerHTML = `Number of Tours≈ ${numberOfTours.toFixed(2)}`;
-            }
+    function showSalesResults() {
+        const vehicleType = document.getElementById('vehicleType').value;
 
-            function showSalesResults() {
-                const vehicleType = document.getElementById('vehicleType').value;
+        const vehicleInfo = {
+            "3-Achser": { minPrice: 67.50, maxPrice: 72.50 },
+            "4-Achser": { minPrice: 77.50, maxPrice: 82.50 },
+            "5-Achser": { minPrice: 87.50, maxPrice: 92.50 },
+            "Hängerzug": { minPrice: 87.50, maxPrice: 92.50 },
+            "Muldenkipper": { minPrice: 72.50, maxPrice: 77.50 }
+        };
 
-                const vehicleInfo = {
-                    "3-Achser": { minPrice: 67.50, maxPrice: 72.50 },
-                    "4-Achser": { minPrice: 77.50, maxPrice: 82.50 },
-                    "5-Achser": { minPrice: 87.50, maxPrice: 92.50 },
-                    "Hängerzug": { minPrice: 87.50, maxPrice: 92.50 },
-                    "Muldenkipper": { minPrice: 72.50, maxPrice: 77.50 }
-                };
+        const minPrice = vehicleInfo[vehicleType].minPrice;
+        const maxPrice = vehicleInfo[vehicleType].maxPrice;
 
-                const minPrice = vehicleInfo[vehicleType].minPrice;
-                const maxPrice = vehicleInfo[vehicleType].maxPrice;
+        document.getElementById('minVehiclePriceSales').innerHTML = `Min Vehicle Price: €${minPrice.toFixed(2)}`;
+        document.getElementById('maxVehiclePriceSales').innerHTML = `Max Vehicle Price: €${maxPrice.toFixed(2)}`;
 
-                document.getElementById('minVehiclePriceSales').innerHTML = `Min Vehicle Price: €${minPrice.toFixed(2)}`;
-                document.getElementById('maxVehiclePriceSales').innerHTML = `Max Vehicle Price: €${maxPrice.toFixed(2)}`;
+        const actualPurchasePrice = parseFloat(document.getElementById('actualPurchasePrice').value);
+        const marginPercentage = parseFloat(document.getElementById('marginPercentage').value);
 
-                const actualPurchasePrice = parseFloat(document.getElementById('actualPurchasePrice').value);
-                const marginPercentage = parseFloat(document.getElementById('marginPercentage').value);
-
-                const marginAmount = actualPurchasePrice * (marginPercentage / 100);
-                const salesPerAmount = actualPurchasePrice + marginAmount;
-                const totalSalesResult = salesPerAmount * convertedAmount;
-
-
-                document.getElementById('finalPrice').innerHTML = `Sales per unit: €${salesPerAmount.toFixed(2)}`;
-                document.getElementById('totalPrice').innerHTML = `Total Sales: €${totalSalesResult.toFixed(2)}`;
-            }
+        const marginAmount = actualPurchasePrice * (marginPercentage / 100);
+        const salesPerAmount = actualPurchasePrice + marginAmount;
+        const totalSalesResult = salesPerAmount * convertedAmount;
 
 
-            function showDisposalResults() {
+        document.getElementById('finalPrice').innerHTML = `Sales per unit: €${salesPerAmount.toFixed(2)}`;
+        document.getElementById('totalPrice').innerHTML = `Total Sales: €${totalSalesResult.toFixed(2)}`;
+    }
+
+
+    function showDisposalResults() {
         // Retrieve material and amount from the Material section
         const material = document.getElementById('material').value;
         const amount = parseFloat(document.getElementById('amount').value);
@@ -561,7 +586,7 @@
             // Retrieve total disposal price, margin disposal sales, and include transport value
             const totalDisposalPrice = parseFloat(document.getElementById('totalDisposalPrice').innerText.replace('Total Disposal Price: €', ''));
             const marginDisposalSales = parseFloat(document.getElementById('marginDisposalSales').value);
-            const includeTransport = document.getElementById('includeTransport').value;
+            const includeTransport = document.getElementById('includeTransportSummary').value;
 
             
 
