@@ -73,7 +73,7 @@
             font-weight: 500;
         }
 
-        select,
+        
         input,
         button {
             width: calc(100% - 40px);
@@ -86,7 +86,39 @@
             margin-top: 16px;
         }
 
-        
+        /* Styles for the dropdown lists */
+select {
+    width: calc(100% - 40px);
+    padding: 10px;
+    margin-bottom: 16px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    box-sizing: border-box;
+    font-family: 'Montserrat', sans-serif;
+    margin-top: 16px;
+    appearance: none; /* Removes default appearance on some browsers */
+    background-color: #fff; /* Background color of the dropdown */
+    color: #3A3A3A; /* Text color of the dropdown */
+    cursor: pointer; /* Show pointer cursor on hover */
+    outline: none; /* Remove the outline when clicked */
+    transition: border-color 0.3s; /* Add a smooth transition effect for border color */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow for depth */
+}
+
+/* Optional: Styles for dropdown options */
+select option {
+    padding: 12px;
+    margin: 20px 0;
+    font-size: 14px;
+    background-color: #fff;
+    color: #3A3A3A;
+    border-bottom: 1px solid #ccc;
+    
+    
+}
+
+
+
 
         
 
@@ -135,17 +167,17 @@
     background-color: #fff;
     border: 1px solid #5d432c;
     border-radius: 8px;
-}
+    }
 
-.result-section h3 {
-    margin-top: auto;
-    margin-bottom: 10px;
-    color: #A58F6E;
-}
+    .result-section h3 {
+        margin-top: auto;
+        margin-bottom: 10px;
+        color: #A58F6E;
+    }
 
-.result-section p {
-    margin-bottom: 8px;
-    color: #3A3A3A;
+    .result-section p {
+        margin-bottom: 8px;
+        color: #3A3A3A;
 }
         
 
@@ -220,6 +252,7 @@
                 <p id="workingHoursResult"></p>
                 <p id="cycleTimeResult"></p>
                 <p id="numberOfToursResult"></p>
+                <p id="numberOfWorkingDaysResult"></p>
             </div>
         </div>
 
@@ -234,18 +267,8 @@
                 <option value="Muldenkipper">Muldenkipper</option>
             </select>
 
-            <div class="result-section">
-                <h3>Purchase Results</h3>
-                <p id="minVehiclePrice"></p>
-                <p id="maxVehiclePrice"></p>
-                <p id="vehicleWeight"></p>
-            </div>
-        </div>
+            
 
-        
-
-        <div class="form-section">
-            <h3>Transport (Sales)</h3>
             <div id="minMaxPricePerHour">
                 <p id="minVehiclePriceSales"></p>
                 <p id="maxVehiclePriceSales"></p>
@@ -253,6 +276,23 @@
 
             <label for="actualPurchasePrice">Actual Purchase Price:</label>
             <input type="number" id="actualPurchasePrice" name="actualPurchasePrice" required>
+
+            <div class="result-section">
+                <h3>Purchase Results</h3>
+                <p id="minVehiclePrice"></p>
+                <p id="maxVehiclePrice"></p>
+                <p id="vehicleWeight"></p>
+                <p id="pricePerTon"></p>
+            </div>
+        </div>
+
+        
+
+        <div class="form-section">
+            <h3>Transport (Sales)</h3>
+            
+
+            
 
             <label for="marginPercentage">Margin Percentage:</label>
             <input type="number" id="marginPercentage" name="marginPercentage" required>
@@ -267,11 +307,6 @@
         <div class="form-section" id="disposalSection">
             <h3>Disposal (Purchase)</h3>
         
-            <label for="disposalMaterial"></label>
-            <p id="disposalMaterialInfo"></p> <!-- Corrected ID -->
-        
-            <label for="disposalAmount"></label>
-            <p id="disposalAmountInfo"></p> <!-- Corrected ID -->
         
             <label for="disposalPrice">Disposal Price per Unit:</label>
             <input type="number" id="disposalPrice" name="disposalPrice" required>
@@ -330,6 +365,7 @@
             <p id="workingHoursResultSummary"></p>
             <p id="cycleTimeResultSummary"></p>
             <p id="numberOfToursResultSummary"></p>
+            <p id="numberOfWorkingDaysResultSummary"></p>
             
             <p id="disposalAmountInfoSummary"></p>
             <p id="totalDisposalPriceSummary"></p>
@@ -418,26 +454,7 @@
         document.getElementById('convertedAmountResult').innerHTML = `${convertedAmountLabel}: ${convertedAmount.toFixed(2)} (${unit})`;
     }
 
-    function showVehicleResults() {
-        const vehicleType = document.getElementById('vehicleType').value;
-        
-
-        const vehicleInfo = {
-            "3-Achser": { weight: 12, stundensatz: 65, vk: 75, proMinute: 1.25, beEntladezeit: 15, minPrice: 67.50, maxPrice: 72.50 },
-            "4-Achser": { weight: 18, stundensatz: 75, vk: 85, proMinute: 1.416666667, beEntladezeit: 17, minPrice: 77.50, maxPrice: 82.50 },
-            "5-Achser": { weight: 25, stundensatz: 82, vk: 92, proMinute: 1.533333333, beEntladezeit: 22, minPrice: 87.50, maxPrice: 92.50 },
-            "Hängerzug": { weight: 23, minPrice: 87.50, maxPrice: 92.50 },
-            "Muldenkipper": { weight: 24, stundensatz: 82, vk: 92, proMinute: 1.533333333, beEntladezeit: 22, minPrice: 72.50, maxPrice: 77.50 }
-        };
-
-        const minPrice = vehicleInfo[vehicleType].minPrice;
-        const maxPrice = vehicleInfo[vehicleType].maxPrice
-        const weight = vehicleInfo[vehicleType].weight;
-
-        document.getElementById('minVehiclePrice').innerHTML = `Min Vehicle Price: €${minPrice.toFixed(2)}`;
-        document.getElementById('maxVehiclePrice').innerHTML = `Max Vehicle Price: €${maxPrice.toFixed(2)}`;
-        document.getElementById('vehicleWeight').innerHTML = `Vehicle Capacity: ${weight} tons`;
-    }
+    let toursConvertedAmount;
 
     function showTimeResults() {
         const numberOfVehicles = document.getElementById('numberOfVehicles').value;
@@ -449,14 +466,12 @@
         const cycleTime = 2 * travelTime + loadingTime + unloadingTime;
                 
 
-        let toursConvertedAmount = convertedAmount;
-        if (convertedAmountLabel === 'Mass') {
-            toursConvertedAmount = convertedAmount / density;
+        toursConvertedAmount = convertedAmount;
+        if (convertedAmountLabel === 'Volume') {
+            toursConvertedAmount = convertedAmount * density;
         }
-        else {
-            toursConvertedAmount = convertedAmount;
-        }
-                
+        
+       
 
         const vehicleType = document.getElementById('vehicleType').value;
         const vehicleInfo = {
@@ -468,33 +483,62 @@
         };
         const weightOfSelectedVehicle = vehicleInfo[vehicleType].weight;
 
-
-            
-
+        
                 // Corrected formula for number of tours
-        const numberOfTours = 2 * Math.ceil( toursConvertedAmount / weightOfSelectedVehicle);
-        console.log('weight of selected vehicle',weightOfSelectedVehicle)
-        console.log('toursConvertedAmount',toursConvertedAmount)
-        console.log('numberOfTours:', numberOfTours);
+                const numberOfTours = Math.ceil(toursConvertedAmount / (numberOfVehicles * weightOfSelectedVehicle));
+
+                // Calculate total time required to finish the job
+const totalWorkingTime = numberOfTours * cycleTime; // Total time required to finish the job
+
+// Calculate number of working days
+const numberOfWorkingDays = totalWorkingTime / (workingHours * 60); // Convert working hours to minutes
+    
         document.getElementById('numberOfVehiclesResult').innerHTML = `Number of Vehicles: ${numberOfVehicles}`;
         document.getElementById('workingHoursResult').innerHTML = `Working Hours≈ ${workingHours}`;
         document.getElementById('cycleTimeResult').innerHTML = `Cycle Time≈ ${cycleTime.toFixed(2)} minutes`;
         document.getElementById('numberOfToursResult').innerHTML = `Number of Tours≈ ${numberOfTours.toFixed(2)}`;
+        document.getElementById('numberOfWorkingDaysResult').innerHTML = `Number of Working Days≈ ${numberOfWorkingDays.toFixed(2)}`;
+
+              
     }
+
+    function showVehicleResults() {
+        const vehicleType = document.getElementById('vehicleType').value;
+        
+        
+        const vehicleInfo = {
+            "3-Achser": { weight: 12, stundensatz: 65, vk: 75, proMinute: 1.25, beEntladezeit: 15, minPrice: 67.50, maxPrice: 72.50 },
+            "4-Achser": { weight: 18, stundensatz: 75, vk: 85, proMinute: 1.416666667, beEntladezeit: 17, minPrice: 77.50, maxPrice: 82.50 },
+            "5-Achser": { weight: 25, stundensatz: 82, vk: 92, proMinute: 1.533333333, beEntladezeit: 22, minPrice: 87.50, maxPrice: 92.50 },
+            "Hängerzug": { weight: 23, minPrice: 87.50, maxPrice: 92.50 },
+            "Muldenkipper": { weight: 24, stundensatz: 82, vk: 92, proMinute: 1.533333333, beEntladezeit: 22, minPrice: 72.50, maxPrice: 77.50 }
+        };
+
+        const minPrice = vehicleInfo[vehicleType].minPrice;
+        const maxPrice = vehicleInfo[vehicleType].maxPrice
+        const weight = vehicleInfo[vehicleType].weight;
+         
+
+        document.getElementById('minVehiclePrice').innerHTML = `Min Vehicle Price: €${minPrice.toFixed(2)}`;
+        document.getElementById('maxVehiclePrice').innerHTML = `Max Vehicle Price: €${maxPrice.toFixed(2)}`;
+        document.getElementById('vehicleWeight').innerHTML = `Vehicle Capacity: ${weight} tons`;
+    }
+
 
     function showSalesResults() {
         const vehicleType = document.getElementById('vehicleType').value;
-
+        
         const vehicleInfo = {
-            "3-Achser": { minPrice: 67.50, maxPrice: 72.50 },
-            "4-Achser": { minPrice: 77.50, maxPrice: 82.50 },
-            "5-Achser": { minPrice: 87.50, maxPrice: 92.50 },
-            "Hängerzug": { minPrice: 87.50, maxPrice: 92.50 },
-            "Muldenkipper": { minPrice: 72.50, maxPrice: 77.50 }
+            "3-Achser": { minPrice: 67.50, maxPrice: 72.50, weight: 12 },
+            "4-Achser": { minPrice: 77.50, maxPrice: 82.50, weight: 18 },
+            "5-Achser": { minPrice: 87.50, maxPrice: 92.50, weight: 25 },
+            "Hängerzug": { minPrice: 87.50, maxPrice: 92.50, weight: 23 },
+            "Muldenkipper": { minPrice: 72.50, maxPrice: 77.50, weight: 24 }
         };
 
         const minPrice = vehicleInfo[vehicleType].minPrice;
         const maxPrice = vehicleInfo[vehicleType].maxPrice;
+        const capacity = vehicleInfo[vehicleType].weight;
 
         document.getElementById('minVehiclePriceSales').innerHTML = `Min Vehicle Price: €${minPrice.toFixed(2)}`;
         document.getElementById('maxVehiclePriceSales').innerHTML = `Max Vehicle Price: €${maxPrice.toFixed(2)}`;
@@ -506,7 +550,9 @@
         const salesPerAmount = actualPurchasePrice + marginAmount;
         const totalSalesResult = salesPerAmount * convertedAmount;
 
+        const perTonPrice = actualPurchasePrice / capacity;
 
+        document.getElementById('pricePerTon').innerHTML = `Price per Ton: €${perTonPrice.toFixed(2)}`;
         document.getElementById('finalPrice').innerHTML = `Sales per unit: €${salesPerAmount.toFixed(2)}`;
         document.getElementById('totalPrice').innerHTML = `Total Sales: €${totalSalesResult.toFixed(2)}`;
     }
@@ -517,9 +563,7 @@
         const material = document.getElementById('material').value;
         const amount = parseFloat(document.getElementById('amount').value);
 
-        // Display material and amount in the Disposal section
-        document.getElementById('disposalMaterialInfo').innerHTML = `Selected Material: ${material}`;
-        document.getElementById('disposalAmountInfo').innerHTML = `Amount Entered: ${amount.toFixed(2)} tons`;
+        
 
         // Retrieve disposal price and additional costs
         const disposalPrice = parseFloat(document.getElementById('disposalPrice').value);
@@ -564,7 +608,7 @@
     document.getElementById('workingHoursResultSummary').innerHTML = document.getElementById('workingHoursResult').innerHTML;
     document.getElementById('cycleTimeResultSummary').innerHTML = document.getElementById('cycleTimeResult').innerHTML;
     document.getElementById('numberOfToursResultSummary').innerHTML = document.getElementById('numberOfToursResult').innerHTML;
-    
+    document.getElementById('numberOfWorkingDaysResultSummary').innerHTML = document.getElementById('numberOfWorkingDaysResult').innerHTML;
     document.getElementById('finalPriceSummary').innerHTML = document.getElementById('finalPrice').innerHTML;
     document.getElementById('disposalMaterialInfoSummary').innerHTML = document.getElementById('disposalMaterialInfo').innerHTML;
     
@@ -644,6 +688,7 @@ function copySummaryToClipboard() {
         { id: 'numberOfToursResultSummary', label: '' },
         { id: 'disposalSalesPerUnit', label: '' },
         { id: 'disposalSalesResult', label: '' },
+        { id: 'numberOfWorkingDaysResult', label: ''}
     ];
 
     // Select the content of the specified elements
