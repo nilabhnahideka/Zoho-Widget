@@ -20,17 +20,17 @@
             font-family: 'DM Sans', sans-serif;
             background-color: #F1F1F1;
             color: #3A3A3A;
-            padding: 20px;
+            padding: 5px;
             margin: 0;
             text-align: center;
         }
 
         h1 {
             color: #D6AD53;
-            font-size: 36px;
+            font-size: 20px;
             margin-top: 0;
             margin-bottom: 10px;
-            text-align: left;
+            text-align: center;
             font-family: 'Montserrat', sans-serif;
             font-weight: bold;
         }
@@ -47,6 +47,7 @@
             margin-bottom: 20px;
             font-family: 'Montserrat', sans-serif;
             font-weight: 500;
+            font-size: medium;
         }
 
         form {
@@ -62,7 +63,8 @@
             margin: 0 auto;
             display: flex;
             flex-wrap: wrap;
-            gap: 20px;
+            gap: 15px;
+            font-size: small;
         }
 
         label {
@@ -78,12 +80,13 @@
         button {
             width: calc(100% - 40px);
             padding: 10px;
-            margin-bottom: 16px;
+            margin-bottom: 10px;
             border: 1px solid #ccc;
             border-radius: 20px;
             box-sizing: border-box;
             font-family: 'Montserrat', sans-serif;
-            margin-top: 16px;
+            margin-top: 10px;
+            font-size: small;
         }
 
         /* Styles for the dropdown lists */
@@ -103,6 +106,7 @@ select {
     outline: none; /* Remove the outline when clicked */
     transition: border-color 0.3s; /* Add a smooth transition effect for border color */
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow for depth */
+    font-size: small;
 }
 
 /* Optional: Styles for dropdown options */
@@ -113,7 +117,7 @@ select option {
     background-color: #fff;
     color: #3A3A3A;
     border-bottom: 1px solid #ccc;
-    
+    font-size: small;
     
 }
 
@@ -189,7 +193,6 @@ select option {
 
 <body>
     <h1><img src="https://erdbaron.com/wp-content/uploads/2021/02/Erdbaron.svg" alt="Erdbaron Logo" width="150" height="50"></h1>
-    <h2>Cost Calculator</h2>
 
     <form id="costCalculatorForm">
         <div class="form-section" id="materialSection">
@@ -207,23 +210,23 @@ select option {
                 <option value="material9">Beton (Abbruch)</option>
             </select>
 
-            <label for="given">Given:</label>
+            <label for="given">Input Unit:</label>
             <select id="given" name="given" required>
                 <option value="volume">Volume</option>
                 <option value="mass">Mass</option>
             </select>
 
-            <label for="wanted">Wanted:</label>
+            <label for="wanted">Output Unit:</label>
             <select id="wanted" name="wanted" required>
                 <option value="volume">Volume</option>
                 <option value="mass">Mass</option>
             </select>
 
-            <label for="amount">Amount:</label>
+            <label for="amount">Input Amount:</label>
             <input type="number" id="amount" name="amount" required>
 
             <div class="result-section">
-                <h3>Results</h3>
+                <h3>Material Outputs</h3>
             <p id="densityResult"></p>
             <p id="convertedAmountResult"></p></div>
         </div>
@@ -247,7 +250,7 @@ select option {
             <input type="number" id="workingHours" name="workingHours" required>
 
             <div class="result-section">
-                <h3>Time Results</h3>
+                <h3>Time Outputs</h3>
                 <p id="numberOfVehiclesResult"></p>
                 <p id="workingHoursResult"></p>
                 <p id="cycleTimeResult"></p>
@@ -278,9 +281,10 @@ select option {
             <input type="number" id="actualPurchasePrice" name="actualPurchasePrice" required>
 
             <div class="result-section">
-                <h3>Purchase Results</h3>
+                <h3>Purchase Outputs</h3>
                 <p id="minVehiclePrice"></p>
                 <p id="maxVehiclePrice"></p>
+                <p id="totalPurchasePriceResult"></p>
                 <p id="vehicleWeight"></p>
                 <p id="pricePerTon"></p>
             </div>
@@ -298,9 +302,11 @@ select option {
             <input type="number" id="marginPercentage" name="marginPercentage" required>
 
             <div class="result-section">
-                <h3>Sales Results</h3>
+                <h3>Sales Outputs</h3>
                 <p id="finalPrice"></p>
                 <p id="totalPrice"></p>
+                <p id="marginPerUnit"></p>
+                <p id="totalMargin"></p>
             </div>
         </div>
 
@@ -315,7 +321,7 @@ select option {
             <input type="number" id="additionalCosts" name="additionalCosts" required>
         
             <div class="result-section">
-                <h3>Disposal Results</h3>
+                <h3>Disposal Outputs</h3>
                 <p id="totalDisposalPrice"></p> <!-- Corrected ID -->
             </div>
         </div>
@@ -334,9 +340,11 @@ select option {
     <input type="number" id="actualPurchasePriceTransport" name="actualPurchasePriceTransport" value="" placeholder="Actual Purchase Price" disabled>
 
     <div class="result-section">
-        <h3>Disposal Sales Results</h3>
+        <h3>Disposal Sales Outputs</h3>
         <p id="disposalSalesPerUnit"></p>
         <p id="disposalSalesResult"></p>
+        <p id="marginPerUnitDisposal"></p>
+        <p id="totalMarginDisposal"></p>
     </div>
 </div>
         
@@ -399,6 +407,8 @@ select option {
         showSalesResults();
         showDisposalResults();
         showDisposalSalesResults();
+        showMarginResults();
+        showMarginResultsDisposal();
         updateSummary();
         calculateTotal();
     }
@@ -504,7 +514,7 @@ const numberOfWorkingDays = totalWorkingTime / (workingHours * 60); // Convert w
 
     function showVehicleResults() {
         const vehicleType = document.getElementById('vehicleType').value;
-        
+        const actualPurchasePrice = parseFloat(document.getElementById('actualPurchasePrice').value);
         
         const vehicleInfo = {
             "3-Achser": { weight: 12, stundensatz: 65, vk: 75, proMinute: 1.25, beEntladezeit: 15, minPrice: 67.50, maxPrice: 72.50 },
@@ -518,10 +528,12 @@ const numberOfWorkingDays = totalWorkingTime / (workingHours * 60); // Convert w
         const maxPrice = vehicleInfo[vehicleType].maxPrice
         const weight = vehicleInfo[vehicleType].weight;
          
+        const totalPurchasePrice = convertedAmount * actualPurchasePrice;
 
-        document.getElementById('minVehiclePrice').innerHTML = `Min Vehicle Price: €${minPrice.toFixed(2)}`;
-        document.getElementById('maxVehiclePrice').innerHTML = `Max Vehicle Price: €${maxPrice.toFixed(2)}`;
+        document.getElementById('minVehiclePrice').innerHTML = `Min Vehicle Price (per hour): €${minPrice.toFixed(2)}`;
+        document.getElementById('maxVehiclePrice').innerHTML = `Max Vehicle Price (per hour): €${maxPrice.toFixed(2)}`;
         document.getElementById('vehicleWeight').innerHTML = `Vehicle Capacity: ${weight} tons`;
+        document.getElementById('totalPurchasePriceResult').innerHTML = `Total Purchase Price: €${totalPurchasePrice.toFixed(2)}`;
     }
 
 
@@ -540,8 +552,8 @@ const numberOfWorkingDays = totalWorkingTime / (workingHours * 60); // Convert w
         const maxPrice = vehicleInfo[vehicleType].maxPrice;
         const capacity = vehicleInfo[vehicleType].weight;
 
-        document.getElementById('minVehiclePriceSales').innerHTML = `Min Vehicle Price: €${minPrice.toFixed(2)}`;
-        document.getElementById('maxVehiclePriceSales').innerHTML = `Max Vehicle Price: €${maxPrice.toFixed(2)}`;
+        document.getElementById('minVehiclePriceSales').innerHTML = `Min Vehicle Price (per hour): €${minPrice.toFixed(2)}`;
+        document.getElementById('maxVehiclePriceSales').innerHTML = `Max Vehicle Price (per hour): €${maxPrice.toFixed(2)}`;
 
         const actualPurchasePrice = parseFloat(document.getElementById('actualPurchasePrice').value);
         const marginPercentage = parseFloat(document.getElementById('marginPercentage').value);
@@ -597,10 +609,39 @@ const numberOfWorkingDays = totalWorkingTime / (workingHours * 60); // Convert w
 }
 
 
+function showMarginResults() {
+    const marginPercentage = parseFloat(document.getElementById('marginPercentage').value);
+    const convertedAmount = parseFloat(document.getElementById('amount').value);
+
+    // Calculate margin per unit and total margin
+    const marginAmount = convertedAmount * (marginPercentage / 100);
+    const marginPerUnit = marginAmount / convertedAmount;
+    const totalMargin = marginAmount;
+
+    // Display margin per unit and total margin
+    document.getElementById('marginPerUnit').innerHTML = `Margin per Unit: €${marginPerUnit.toFixed(2)}`;
+    document.getElementById('totalMargin').innerHTML = `Total Margin: €${totalMargin.toFixed(2)}`;
+}
+
+// Similar functions for the Disposal (Sales) section
+function showMarginResultsDisposal() {
+    const marginPercentage = parseFloat(document.getElementById('marginDisposalSales').value);
+    const convertedAmount = parseFloat(document.getElementById('amount').value);
+
+    // Calculate margin per unit and total margin for disposal
+    const marginAmountDisposal = convertedAmount * (marginPercentage / 100);
+    const marginPerUnitDisposal = marginAmountDisposal / convertedAmount;
+    const totalMarginDisposal = marginAmountDisposal;
+
+    // Display margin per unit and total margin for disposal
+    document.getElementById('marginPerUnitDisposal').innerHTML = `Margin per Unit: €${marginPerUnitDisposal.toFixed(2)}`;
+    document.getElementById('totalMarginDisposal').innerHTML = `Total Margin: €${totalMarginDisposal.toFixed(2)}`;
+}
+
 
 
             // New function to update the Summary section
-            function updateSummary() {
+    function updateSummary() {
     // Update the Summary section with calculated results
     document.getElementById('convertedAmountResultSummary').innerHTML = document.getElementById('convertedAmountResult').innerHTML;
     document.getElementById('vehicleWeightSummary').innerHTML = document.getElementById('vehicleWeight').innerHTML;
