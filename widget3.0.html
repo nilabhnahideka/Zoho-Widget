@@ -495,7 +495,7 @@ select option {
 
         
                 // Corrected formula for number of tours
-                const numberOfTours = Math.ceil(toursConvertedAmount / (numberOfVehicles * weightOfSelectedVehicle));
+                const numberOfTours = toursConvertedAmount / (numberOfVehicles * weightOfSelectedVehicle);
 
                 // Calculate total time required to finish the job
 const totalWorkingTime = numberOfTours * cycleTime; // Total time required to finish the job
@@ -509,10 +509,19 @@ const numberOfWorkingDays = totalWorkingTime / (workingHours * 60); // Convert w
         document.getElementById('numberOfToursResult').innerHTML = `Number of Tours≈ ${numberOfTours.toFixed(2)}`;
         document.getElementById('numberOfWorkingDaysResult').innerHTML = `Number of Working Days≈ ${numberOfWorkingDays.toFixed(2)}`;
 
+        return {
+            numberOfTours: numberOfTours,
+            cycleTime: cycleTime
+        }
+
               
     }
 
     function showVehicleResults() {
+
+        const { numberOfTours, cycleTime } = showTimeResults();
+
+
         const vehicleType = document.getElementById('vehicleType').value;
         const actualPurchasePrice = parseFloat(document.getElementById('actualPurchasePrice').value);
         
@@ -528,7 +537,7 @@ const numberOfWorkingDays = totalWorkingTime / (workingHours * 60); // Convert w
         const maxPrice = vehicleInfo[vehicleType].maxPrice
         const weight = vehicleInfo[vehicleType].weight;
          
-        const totalPurchasePrice = convertedAmount * actualPurchasePrice;
+        const totalPurchasePrice = ((cycleTime * numberOfTours)/60)*actualPurchasePrice;
 
         document.getElementById('minVehiclePrice').innerHTML = `Min Vehicle Price (per hour): €${minPrice.toFixed(2)}`;
         document.getElementById('maxVehiclePrice').innerHTML = `Max Vehicle Price (per hour): €${maxPrice.toFixed(2)}`;
@@ -582,7 +591,7 @@ const numberOfWorkingDays = totalWorkingTime / (workingHours * 60); // Convert w
         const additionalCosts = parseFloat(document.getElementById('additionalCosts').value);
 
         // Calculate total disposal price
-        const totalDisposalPrice = amount * disposalPrice + additionalCosts;
+        const totalDisposalPrice = convertedAmount * disposalPrice + additionalCosts;
 
         // Display total disposal price
         document.getElementById('totalDisposalPrice').innerHTML = `Total Disposal Price: €${totalDisposalPrice.toFixed(2)}`;
