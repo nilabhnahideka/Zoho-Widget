@@ -543,10 +543,18 @@ const numberOfWorkingDays = totalWorkingTime / (workingHours * 60); // Convert w
         document.getElementById('maxVehiclePrice').innerHTML = `Max Vehicle Price (per hour): €${maxPrice.toFixed(2)}`;
         document.getElementById('vehicleWeight').innerHTML = `Vehicle Capacity: ${weight} tons`;
         document.getElementById('totalPurchasePriceResult').innerHTML = `Total Purchase Price: €${totalPurchasePrice.toFixed(2)}`;
+
+        return {
+            totalPurchasePrice: totalPurchasePrice,
+            
+        }
+
     }
 
 
     function showSalesResults() {
+        const { totalPurchasePrice } = showVehicleResults();
+
         const vehicleType = document.getElementById('vehicleType').value;
         
         const vehicleInfo = {
@@ -567,11 +575,15 @@ const numberOfWorkingDays = totalWorkingTime / (workingHours * 60); // Convert w
         const actualPurchasePrice = parseFloat(document.getElementById('actualPurchasePrice').value);
         const marginPercentage = parseFloat(document.getElementById('marginPercentage').value);
 
-        const marginAmount = actualPurchasePrice * (marginPercentage / 100);
-        const salesPerAmount = actualPurchasePrice + marginAmount;
+    
+        const perTonPrice = actualPurchasePrice / capacity;
+
+
+        const marginAmount = totalPurchasePrice * (marginPercentage / 100);
+        const salesPerAmount = perTonPrice + marginAmount;
         const totalSalesResult = salesPerAmount * convertedAmount;
 
-        const perTonPrice = actualPurchasePrice / capacity;
+        
 
         document.getElementById('pricePerTon').innerHTML = `Price per Ton: €${perTonPrice.toFixed(2)}`;
         document.getElementById('finalPrice').innerHTML = `Sales per unit: €${salesPerAmount.toFixed(2)}`;
@@ -619,12 +631,14 @@ const numberOfWorkingDays = totalWorkingTime / (workingHours * 60); // Convert w
 
 
 function showMarginResults() {
+    const { totalPurchasePrice } = showVehicleResults();
+
     const marginPercentage = parseFloat(document.getElementById('marginPercentage').value);
-    const convertedAmount = parseFloat(document.getElementById('amount').value);
+    //const convertedAmount = parseFloat(document.getElementById('amount').value);
 
     // Calculate margin per unit and total margin
-    const marginAmount = convertedAmount * (marginPercentage / 100);
-    const marginPerUnit = marginAmount / convertedAmount;
+    const marginAmount = totalPurchasePrice * (marginPercentage / 100);
+    const marginPerUnit = marginPercentage / totalPurchasePrice;
     const totalMargin = marginAmount;
 
     // Display margin per unit and total margin
@@ -634,12 +648,14 @@ function showMarginResults() {
 
 // Similar functions for the Disposal (Sales) section
 function showMarginResultsDisposal() {
+    const { totalPurchasePrice } = showVehicleResults();
+
     const marginPercentage = parseFloat(document.getElementById('marginDisposalSales').value);
-    const convertedAmount = parseFloat(document.getElementById('amount').value);
+    //const convertedAmount = parseFloat(document.getElementById('amount').value);
 
     // Calculate margin per unit and total margin for disposal
-    const marginAmountDisposal = convertedAmount * (marginPercentage / 100);
-    const marginPerUnitDisposal = marginAmountDisposal / convertedAmount;
+    const marginAmountDisposal = totalPurchasePrice * (marginPercentage / 100);
+    const marginPerUnitDisposal = marginAmountDisposal / totalPurchasePrice;
     const totalMarginDisposal = marginAmountDisposal;
 
     // Display margin per unit and total margin for disposal
