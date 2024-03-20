@@ -667,6 +667,9 @@ function showMarginResultsDisposal() {
 
             // New function to update the Summary section
     function updateSummary() {
+
+
+        const { totalPurchasePrice } = showVehicleResults();
     // Update the Summary section with calculated results
     document.getElementById('convertedAmountResultSummary').innerHTML = document.getElementById('convertedAmountResult').innerHTML;
     document.getElementById('vehicleWeightSummary').innerHTML = document.getElementById('vehicleWeight').innerHTML;
@@ -681,13 +684,13 @@ function showMarginResultsDisposal() {
     // Remaining lines for other information in the summary
 
     // Retrieve actual purchase price, margin percentage, and converted amount
-    const actualPurchasePrice = parseFloat(document.getElementById('actualPurchasePrice').value);
+    //const actualPurchasePrice = parseFloat(document.getElementById('actualPurchasePrice').value);
     const marginPercentage = parseFloat(document.getElementById('marginPercentage').value);
     const convertedAmount = parseFloat(document.getElementById('amount').value);
 
     // Calculate total sales amount
-    const marginAmount = actualPurchasePrice * (marginPercentage / 100);
-    const salesPerAmount = actualPurchasePrice + marginAmount;
+    const marginAmount = totalPurchasePrice * (marginPercentage / 100);
+    const salesPerAmount = totalPurchasePrice + marginAmount;
     const totalSalesAmount = salesPerAmount * convertedAmount;
 
     // Display total sales amount
