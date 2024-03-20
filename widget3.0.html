@@ -638,7 +638,7 @@ function showMarginResults() {
 
     // Calculate margin per unit and total margin
     const marginAmount = totalPurchasePrice * (marginPercentage / 100);
-    const marginPerUnit = marginPercentage / totalPurchasePrice;
+    const marginPerUnit = marginAmount / totalPurchasePrice;
     const totalMargin = marginAmount;
 
     // Display margin per unit and total margin
