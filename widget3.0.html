@@ -282,8 +282,7 @@ select option {
 
             <div class="result-section">
                 <h3>Purchase Outputs</h3>
-                <p id="minVehiclePrice"></p>
-                <p id="maxVehiclePrice"></p>
+               
                 <p id="totalPurchasePriceResult"></p>
                 <p id="vehicleWeight"></p>
                 <p id="pricePerTon"></p>
@@ -335,9 +334,7 @@ select option {
 
     
 
-    <!-- Set value attribute for the actual purchase price -->
-    <label for="actualPurchasePriceTransport">Actual Purchase Price of Vehicle (if included):</label>
-    <input type="number" id="actualPurchasePriceTransport" name="actualPurchasePriceTransport" value="" placeholder="Actual Purchase Price" disabled>
+
 
     <div class="result-section">
         <h3>Disposal Sales Outputs</h3>
@@ -539,8 +536,7 @@ const numberOfWorkingDays = totalWorkingTime / (workingHours * 60); // Convert w
          
         const totalPurchasePrice = ((cycleTime * numberOfTours)/60)*actualPurchasePrice;
 
-        document.getElementById('minVehiclePrice').innerHTML = `Min Vehicle Price (per hour): €${minPrice.toFixed(2)}`;
-        document.getElementById('maxVehiclePrice').innerHTML = `Max Vehicle Price (per hour): €${maxPrice.toFixed(2)}`;
+        
         document.getElementById('vehicleWeight').innerHTML = `Vehicle Capacity: ${weight} tons`;
         document.getElementById('totalPurchasePriceResult').innerHTML = `Total Purchase Price: €${totalPurchasePrice.toFixed(2)}`;
 
@@ -553,75 +549,59 @@ const numberOfWorkingDays = totalWorkingTime / (workingHours * 60); // Convert w
 
 
     function showSalesResults() {
-        const { totalPurchasePrice } = showVehicleResults();
-
-        const vehicleType = document.getElementById('vehicleType').value;
-        
-        const vehicleInfo = {
-            "3-Achser": { minPrice: 67.50, maxPrice: 72.50, weight: 12 },
-            "4-Achser": { minPrice: 77.50, maxPrice: 82.50, weight: 18 },
-            "5-Achser": { minPrice: 87.50, maxPrice: 92.50, weight: 25 },
-            "Hängerzug": { minPrice: 87.50, maxPrice: 92.50, weight: 23 },
-            "Muldenkipper": { minPrice: 72.50, maxPrice: 77.50, weight: 24 }
-        };
-
-        const minPrice = vehicleInfo[vehicleType].minPrice;
-        const maxPrice = vehicleInfo[vehicleType].maxPrice;
-        const capacity = vehicleInfo[vehicleType].weight;
-
-        document.getElementById('minVehiclePriceSales').innerHTML = `Min Vehicle Price (per hour): €${minPrice.toFixed(2)}`;
-        document.getElementById('maxVehiclePriceSales').innerHTML = `Max Vehicle Price (per hour): €${maxPrice.toFixed(2)}`;
-
-        const actualPurchasePrice = parseFloat(document.getElementById('actualPurchasePrice').value);
-        const marginPercentage = parseFloat(document.getElementById('marginPercentage').value);
-
+    const { totalPurchasePrice } = showVehicleResults();
+    const vehicleType = document.getElementById('vehicleType').value;
     
-        const perTonPrice = actualPurchasePrice / capacity;
+    const vehicleInfo = {
+        "3-Achser": { minPrice: 67.50, maxPrice: 72.50, weight: 12 },
+        "4-Achser": { minPrice: 77.50, maxPrice: 82.50, weight: 18 },
+        "5-Achser": { minPrice: 87.50, maxPrice: 92.50, weight: 25 },
+        "Hängerzug": { minPrice: 87.50, maxPrice: 92.50, weight: 23 },
+        "Muldenkipper": { minPrice: 72.50, maxPrice: 77.50, weight: 24 }
+    };
+
+    const minPrice = vehicleInfo[vehicleType].minPrice;
+    const capacity = vehicleInfo[vehicleType].weight;
+
+    const actualPurchasePrice = parseFloat(document.getElementById('actualPurchasePrice').value);
+    const marginPercentage = parseFloat(document.getElementById('marginPercentage').value);
+
+    const perTonPrice = actualPurchasePrice / capacity;
+    const marginAmount = totalPurchasePrice * (marginPercentage / 100);
+    const salesPerAmount = perTonPrice * (1 + marginPercentage / 100); // Corrected calculation
+    const totalSalesResult = salesPerAmount * convertedAmount;
+
+    document.getElementById('pricePerTon').innerHTML = `Price per Ton: €${perTonPrice.toFixed(2)}`;
+    document.getElementById('finalPrice').innerHTML = `Sales per unit: €${salesPerAmount.toFixed(2)}`;
+    document.getElementById('totalPrice').innerHTML = `Total Sales: €${totalSalesResult.toFixed(2)}`;
+}
 
 
-        const marginAmount = totalPurchasePrice * (marginPercentage / 100);
-        const salesPerAmount = perTonPrice + marginAmount;
-        const totalSalesResult = salesPerAmount * convertedAmount;
+function showDisposalResults() {
+    // Retrieve material and amount from the Material section
+    const material = document.getElementById('material').value;
+    const amount = parseFloat(document.getElementById('amount').value);
 
-        
+    // Retrieve disposal price and additional costs
+    const disposalPrice = parseFloat(document.getElementById('disposalPrice').value);
+    const additionalCosts = parseFloat(document.getElementById('additionalCosts').value);
 
-        document.getElementById('pricePerTon').innerHTML = `Price per Ton: €${perTonPrice.toFixed(2)}`;
-        document.getElementById('finalPrice').innerHTML = `Sales per unit: €${salesPerAmount.toFixed(2)}`;
-        document.getElementById('totalPrice').innerHTML = `Total Sales: €${totalSalesResult.toFixed(2)}`;
-    }
+    // Calculate total disposal price
+    const totalDisposalPrice = convertedAmount * disposalPrice + additionalCosts;
 
+    // Display total disposal price
+    document.getElementById('totalDisposalPrice').innerHTML = `Total Disposal Price: €${totalDisposalPrice.toFixed(2)}`;
+}
 
-    function showDisposalResults() {
-        // Retrieve material and amount from the Material section
-        const material = document.getElementById('material').value;
-        const amount = parseFloat(document.getElementById('amount').value);
-
-        
-
-        // Retrieve disposal price and additional costs
-        const disposalPrice = parseFloat(document.getElementById('disposalPrice').value);
-        const additionalCosts = parseFloat(document.getElementById('additionalCosts').value);
-
-        // Calculate total disposal price
-        const totalDisposalPrice = convertedAmount * disposalPrice + additionalCosts;
-
-        // Display total disposal price
-        document.getElementById('totalDisposalPrice').innerHTML = `Total Disposal Price: €${totalDisposalPrice.toFixed(2)}`;
-    }
-
-    function showDisposalSalesResults() {
+function showDisposalSalesResults() {
     const marginDisposalSales = parseFloat(document.getElementById('marginDisposalSales').value);
-    const includeTransport = document.getElementById('includeTransportSummary').value;
     const totalDisposalPrice = parseFloat(document.getElementById('totalDisposalPrice').innerText.replace('Total Disposal Price: €', ''));
-
-    // Set the value of the actualPurchasePriceTransport input field
-    document.getElementById('actualPurchasePriceTransport').value = document.getElementById('actualPurchasePrice').value;
+    //const convertedAmount = parseFloat(document.getElementById('amount').value); // Adding missing conversion factor
 
     // Calculate margin amount and disposal sales price per unit
     const marginAmountDisposalSales = totalDisposalPrice * (marginDisposalSales / 100);
     const disposalSalesPerUnit = (totalDisposalPrice + marginAmountDisposalSales) / convertedAmount;
 
-    
     const totalDisposalSalesPrice = disposalSalesPerUnit * convertedAmount;
 
     // Display disposal sales price including transport
@@ -632,13 +612,12 @@ const numberOfWorkingDays = totalWorkingTime / (workingHours * 60); // Convert w
 
 function showMarginResults() {
     const { totalPurchasePrice } = showVehicleResults();
-
     const marginPercentage = parseFloat(document.getElementById('marginPercentage').value);
-    //const convertedAmount = parseFloat(document.getElementById('amount').value);
+    //const convertedAmount = parseFloat(document.getElementById('amount').value); // Adding missing conversion factor
 
     // Calculate margin per unit and total margin
     const marginAmount = totalPurchasePrice * (marginPercentage / 100);
-    const marginPerUnit = marginAmount / totalPurchasePrice;
+    const marginPerUnit = marginAmount / convertedAmount; // Calculate margin per unit correctly
     const totalMargin = marginAmount;
 
     // Display margin per unit and total margin
@@ -646,23 +625,21 @@ function showMarginResults() {
     document.getElementById('totalMargin').innerHTML = `Total Margin: €${totalMargin.toFixed(2)}`;
 }
 
-// Similar functions for the Disposal (Sales) section
 function showMarginResultsDisposal() {
     const { totalPurchasePrice } = showVehicleResults();
-
     const marginPercentage = parseFloat(document.getElementById('marginDisposalSales').value);
-    //const convertedAmount = parseFloat(document.getElementById('amount').value);
+    const totalDisposalPrice = parseFloat(document.getElementById('totalDisposalPrice').innerText.replace('Total Disposal Price: €', ''));
+    //const convertedAmount = parseFloat(document.getElementById('amount').value); // Adding missing conversion factor
 
     // Calculate margin per unit and total margin for disposal
-    const marginAmountDisposal = totalPurchasePrice * (marginPercentage / 100);
-    const marginPerUnitDisposal = marginAmountDisposal / totalPurchasePrice;
+    const marginAmountDisposal = totalDisposalPrice * (marginPercentage / 100);
+    const marginPerUnitDisposal = marginAmountDisposal / convertedAmount; // Calculate margin per unit correctly
     const totalMarginDisposal = marginAmountDisposal;
 
     // Display margin per unit and total margin for disposal
     document.getElementById('marginPerUnitDisposal').innerHTML = `Margin per Unit: €${marginPerUnitDisposal.toFixed(2)}`;
     document.getElementById('totalMarginDisposal').innerHTML = `Total Margin: €${totalMarginDisposal.toFixed(2)}`;
 }
-
 
 
             // New function to update the Summary section
