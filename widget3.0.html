@@ -536,7 +536,9 @@ const numberOfWorkingDays = totalWorkingTime / (workingHours * 60); // Convert w
          
         const totalPurchasePrice = ((cycleTime * numberOfTours)/60)*actualPurchasePrice;
 
-        
+        document.getElementById('minVehiclePriceSales').innerHTML = `Min Price: €${minPrice}`;
+        document.getElementById('maxVehiclePriceSales').innerHTML = `Max Price: €${maxPrice}`;
+
         document.getElementById('vehicleWeight').innerHTML = `Vehicle Capacity: ${weight} tons`;
         document.getElementById('totalPurchasePriceResult').innerHTML = `Total Purchase Price: €${totalPurchasePrice.toFixed(2)}`;
 
