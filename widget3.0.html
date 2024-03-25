@@ -508,7 +508,9 @@ const numberOfWorkingDays = totalWorkingTime / (workingHours * 60); // Convert w
 
         return {
             numberOfTours: numberOfTours,
-            cycleTime: cycleTime
+            cycleTime: cycleTime,
+            numberOfWorkingDays: numberOfWorkingDays
+
         }
 
               
@@ -516,11 +518,12 @@ const numberOfWorkingDays = totalWorkingTime / (workingHours * 60); // Convert w
 
     function showVehicleResults() {
 
-        const { numberOfTours, cycleTime } = showTimeResults();
+        const { numberOfTours, cycleTime, numberOfWorkingDays } = showTimeResults();
 
-
+        const numberOfVehicles = parseInt(document.getElementById('numberOfVehicles').value);
         const vehicleType = document.getElementById('vehicleType').value;
         const actualPurchasePrice = parseFloat(document.getElementById('actualPurchasePrice').value);
+        
         
         const vehicleInfo = {
             "3-Achser": { weight: 12, stundensatz: 65, vk: 75, proMinute: 1.25, beEntladezeit: 15, minPrice: 67.50, maxPrice: 72.50 },
@@ -529,18 +532,22 @@ const numberOfWorkingDays = totalWorkingTime / (workingHours * 60); // Convert w
             "Hängerzug": { weight: 23, minPrice: 87.50, maxPrice: 92.50 },
             "Muldenkipper": { weight: 24, stundensatz: 82, vk: 92, proMinute: 1.533333333, beEntladezeit: 22, minPrice: 72.50, maxPrice: 77.50 }
         };
-
+        
         const minPrice = vehicleInfo[vehicleType].minPrice;
-        const maxPrice = vehicleInfo[vehicleType].maxPrice
+        const maxPrice = vehicleInfo[vehicleType].maxPrice;
+        document.getElementById('minVehiclePriceSales').innerHTML = `Min Price (per hour): €${minPrice}`;
+        document.getElementById('maxVehiclePriceSales').innerHTML = `Max Price (per hour): €${maxPrice}`;
+
+
         const weight = vehicleInfo[vehicleType].weight;
-         
-        const totalPurchasePrice = ((cycleTime * numberOfTours)/60)*actualPurchasePrice;
+        const totalPurchasePrice = ((cycleTime * numberOfTours)/60)*actualPurchasePrice * numberOfVehicles;
 
-        document.getElementById('minVehiclePriceSales').innerHTML = `Min Price: €${minPrice}`;
-        document.getElementById('maxVehiclePriceSales').innerHTML = `Max Price: €${maxPrice}`;
 
-        document.getElementById('vehicleWeight').innerHTML = `Vehicle Capacity: ${weight} tons`;
+        
+        
         document.getElementById('totalPurchasePriceResult').innerHTML = `Total Purchase Price: €${totalPurchasePrice.toFixed(2)}`;
+        document.getElementById('vehicleWeight').innerHTML = `Vehicle Capacity: ${weight} tons`;
+       
 
         return {
             totalPurchasePrice: totalPurchasePrice,
@@ -550,9 +557,11 @@ const numberOfWorkingDays = totalWorkingTime / (workingHours * 60); // Convert w
     }
 
 
+
     function showSalesResults() {
     const { totalPurchasePrice } = showVehicleResults();
     const vehicleType = document.getElementById('vehicleType').value;
+    const numberOfVehicles = parseInt(document.getElementById('numberOfVehicles').value);
     
     const vehicleInfo = {
         "3-Achser": { minPrice: 67.50, maxPrice: 72.50, weight: 12 },
