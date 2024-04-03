@@ -492,7 +492,7 @@ select option {
 
         
                 // Corrected formula for number of tours
-                const numberOfTours = toursConvertedAmount / (numberOfVehicles * weightOfSelectedVehicle);
+                const numberOfTours = toursConvertedAmount / weightOfSelectedVehicle;
 
                 // Calculate total time required to finish the job
 const totalWorkingTime = numberOfTours * cycleTime; // Total time required to finish the job
@@ -541,25 +541,27 @@ const numberOfWorkingDays = totalWorkingTime / (workingHours * 60); // Convert w
 
         const weight = vehicleInfo[vehicleType].weight;
         const totalPurchasePrice = ((cycleTime * numberOfTours)/60)*actualPurchasePrice * numberOfVehicles;
-
+        const perTonPrice = actualPurchasePrice / weight;
 
         
         
         document.getElementById('totalPurchasePriceResult').innerHTML = `Total Purchase Price: €${totalPurchasePrice.toFixed(2)}`;
         document.getElementById('vehicleWeight').innerHTML = `Vehicle Capacity: ${weight} tons`;
-       
+        document.getElementById('pricePerTon').innerHTML = `Price per Ton: €${perTonPrice.toFixed(2)}`;
 
         return {
             totalPurchasePrice: totalPurchasePrice,
+            perTonPrice: perTonPrice
             
         }
+        
 
     }
 
 
 
     function showSalesResults() {
-    const { totalPurchasePrice } = showVehicleResults();
+    const { totalPurchasePrice, perTonPrice } = showVehicleResults();
     const vehicleType = document.getElementById('vehicleType').value;
     const numberOfVehicles = parseInt(document.getElementById('numberOfVehicles').value);
     
@@ -577,12 +579,12 @@ const numberOfWorkingDays = totalWorkingTime / (workingHours * 60); // Convert w
     const actualPurchasePrice = parseFloat(document.getElementById('actualPurchasePrice').value);
     const marginPercentage = parseFloat(document.getElementById('marginPercentage').value);
 
-    const perTonPrice = actualPurchasePrice / capacity;
+    
     const marginAmount = totalPurchasePrice * (marginPercentage / 100);
     const salesPerAmount = perTonPrice * (1 + marginPercentage / 100); // Corrected calculation
     const totalSalesResult = salesPerAmount * convertedAmount;
 
-    document.getElementById('pricePerTon').innerHTML = `Price per Ton: €${perTonPrice.toFixed(2)}`;
+    
     document.getElementById('finalPrice').innerHTML = `Sales per unit: €${salesPerAmount.toFixed(2)}`;
     document.getElementById('totalPrice').innerHTML = `Total Sales: €${totalSalesResult.toFixed(2)}`;
 }
@@ -697,6 +699,7 @@ function showMarginResultsDisposal() {
     document.getElementById('includeTransportSummary').addEventListener('change', function () {
     updateFinalPriceDisplay();
     calculateAll();
+
 });
 
             
