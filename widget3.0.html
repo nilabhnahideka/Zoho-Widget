@@ -498,7 +498,7 @@ select option {
 const totalWorkingTime = numberOfTours * cycleTime; // Total time required to finish the job
 
 // Calculate number of working days
-const numberOfWorkingDays = totalWorkingTime / (workingHours * 60); // Convert working hours to minutes
+const numberOfWorkingDays = totalWorkingTime / (numberOfVehicles * workingHours * 60); // Convert working hours to minutes
     
         document.getElementById('numberOfVehiclesResult').innerHTML = `Number of Vehicles: ${numberOfVehicles}`;
         document.getElementById('workingHoursResult').innerHTML = `Working Hours≈ ${workingHours}`;
