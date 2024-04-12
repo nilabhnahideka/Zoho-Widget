@@ -541,7 +541,7 @@ const numberOfWorkingDays = totalWorkingTime / (numberOfVehicles * workingHours 
 
         const weight = vehicleInfo[vehicleType].weight;
         const totalPurchasePrice = ((cycleTime * numberOfTours)/60)*actualPurchasePrice;
-        const perTonPrice = actualPurchasePrice / weight;
+        const perTonPrice = totalPurchasePrice / weight;
 
         
         
