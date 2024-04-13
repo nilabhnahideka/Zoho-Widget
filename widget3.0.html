@@ -396,6 +396,7 @@ select option {
 <script>
     let convertedAmount;
     let convertedAmountLabel;
+    let toursConvertedAmount;
 
     function calculateAll() {
         showMaterialResults();
@@ -431,6 +432,7 @@ select option {
     //let density;  // Declare density here
         const density = materialDensities[material];
         let convertedAmountLabel = '';
+
         
 
         if (given === 'volume' && wanted === 'volume') {
@@ -459,9 +461,21 @@ select option {
 
         document.getElementById('densityResult').innerHTML = `Density: ${density} kg/m³`;
         document.getElementById('convertedAmountResult').innerHTML = `${convertedAmountLabel}: ${convertedAmount.toFixed(2)} (${unit})`;
+
+
+        if (convertedAmountLabel === 'Volume') {
+            toursConvertedAmount = convertedAmount * density;
+        }
+        else{
+            toursConvertedAmount = convertedAmount;
+        }
+
+
+
+        
     }
 
-    let toursConvertedAmount;
+    
 
     function showTimeResults() {
         const numberOfVehicles = document.getElementById('numberOfVehicles').value;
@@ -472,11 +486,6 @@ select option {
 
         const cycleTime = 2 * travelTime + loadingTime + unloadingTime;
                 
-
-        toursConvertedAmount = convertedAmount;
-        if (convertedAmountLabel === 'Volume') {
-            toursConvertedAmount = convertedAmount * density;
-        }
         
        
 
@@ -537,6 +546,7 @@ const numberOfWorkingDays = totalWorkingTime / (numberOfVehicles * workingHours 
         const maxPrice = vehicleInfo[vehicleType].maxPrice;
         document.getElementById('minVehiclePriceSales').innerHTML = `Min Price (per hour): €${minPrice}`;
         document.getElementById('maxVehiclePriceSales').innerHTML = `Max Price (per hour): €${maxPrice}`;
+
 
 
         const weight = vehicleInfo[vehicleType].weight;
