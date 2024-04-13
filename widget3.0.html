@@ -273,9 +273,10 @@ select option {
             
 
             <div id="minMaxPricePerHour">
+                <p id="vehicleWeight"></p>
                 <p id="minVehiclePriceSales"></p>
                 <p id="maxVehiclePriceSales"></p>
-                <p id="vehicleWeight"></p>
+                
                 <p id="avgPricePerTonPerHour"></p>
             </div>
 
@@ -562,7 +563,7 @@ const numberOfWorkingDays = totalWorkingTime / (numberOfVehicles * workingHours 
 
         const universal = toursConvertedAmount;
         
-        document.getElementById('avgPricePerTonPerHour').innerHTML = `Average Price (per ton per hour): €${avgPricePerTonPerHour}`;
+        document.getElementById('avgPricePerTonPerHour').innerHTML = `Average Price (per ton per hour): €${avgPricePerTonPerHour.toFixed(2)}`;
 
 
         document.getElementById('totalPurchasePriceResult').innerHTML = `Total Purchase Price: €${totalPurchasePrice.toFixed(2)}`;
