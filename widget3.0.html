@@ -275,6 +275,8 @@ select option {
             <div id="minMaxPricePerHour">
                 <p id="minVehiclePriceSales"></p>
                 <p id="maxVehiclePriceSales"></p>
+                <p id="vehicleWeight"></p>
+                <p id="avgPricePerTonPerHour"></p>
             </div>
 
             <label for="actualPurchasePrice">Actual Purchase Price:</label>
@@ -282,10 +284,10 @@ select option {
 
             <div class="result-section">
                 <h3>Purchase Outputs</h3>
-               
-                <p id="totalPurchasePriceResult"></p>
-                <p id="vehicleWeight"></p>
+                
                 <p id="pricePerTon"></p>
+                <p id="totalPurchasePriceResult"></p>
+
             </div>
         </div>
 
@@ -544,6 +546,7 @@ const numberOfWorkingDays = totalWorkingTime / (numberOfVehicles * workingHours 
         
         const minPrice = vehicleInfo[vehicleType].minPrice;
         const maxPrice = vehicleInfo[vehicleType].maxPrice;
+        
         document.getElementById('minVehiclePriceSales').innerHTML = `Min Price (per hour): €${minPrice}`;
         document.getElementById('maxVehiclePriceSales').innerHTML = `Max Price (per hour): €${maxPrice}`;
 
@@ -553,8 +556,15 @@ const numberOfWorkingDays = totalWorkingTime / (numberOfVehicles * workingHours 
         const totalPurchasePrice = ((cycleTime * numberOfTours)/60)*actualPurchasePrice;
         const perTonPrice = totalPurchasePrice / toursConvertedAmount;
 
+        const avgPrice = (minPrice + maxPrice) / 2;
+        const avgPricePerTonPerHour = avgPrice / weight;
+
+
         const universal = toursConvertedAmount;
         
+        document.getElementById('avgPricePerTonPerHour').innerHTML = `Average Price (per ton per hour): €${avgPricePerTonPerHour}`;
+
+
         document.getElementById('totalPurchasePriceResult').innerHTML = `Total Purchase Price: €${totalPurchasePrice.toFixed(2)}`;
         document.getElementById('vehicleWeight').innerHTML = `Vehicle Capacity: ${weight} tons`;
         document.getElementById('pricePerTon').innerHTML = `Price per Ton: €${perTonPrice.toFixed(2)}`;
