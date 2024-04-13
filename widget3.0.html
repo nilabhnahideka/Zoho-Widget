@@ -553,7 +553,7 @@ const numberOfWorkingDays = totalWorkingTime / (numberOfVehicles * workingHours 
         const totalPurchasePrice = ((cycleTime * numberOfTours)/60)*actualPurchasePrice;
         const perTonPrice = totalPurchasePrice / toursConvertedAmount;
 
-        
+        const universal = toursConvertedAmount;
         
         document.getElementById('totalPurchasePriceResult').innerHTML = `Total Purchase Price: €${totalPurchasePrice.toFixed(2)}`;
         document.getElementById('vehicleWeight').innerHTML = `Vehicle Capacity: ${weight} tons`;
@@ -561,7 +561,8 @@ const numberOfWorkingDays = totalWorkingTime / (numberOfVehicles * workingHours 
 
         return {
             totalPurchasePrice: totalPurchasePrice,
-            perTonPrice: perTonPrice
+            perTonPrice: perTonPrice,
+            universal: universal
             
         }
         
@@ -571,7 +572,7 @@ const numberOfWorkingDays = totalWorkingTime / (numberOfVehicles * workingHours 
 
 
     function showSalesResults() {
-    const { totalPurchasePrice, perTonPrice } = showVehicleResults();
+    const { totalPurchasePrice, perTonPrice, universal } = showVehicleResults();
     const vehicleType = document.getElementById('vehicleType').value;
     const numberOfVehicles = parseInt(document.getElementById('numberOfVehicles').value);
     
@@ -592,7 +593,7 @@ const numberOfWorkingDays = totalWorkingTime / (numberOfVehicles * workingHours 
     
     const marginAmount = totalPurchasePrice * (marginPercentage / 100);
     const salesPerAmount = perTonPrice * (1 + marginPercentage / 100); // Corrected calculation
-    const totalSalesResult = salesPerAmount * convertedAmount;
+    const totalSalesResult = salesPerAmount * universal;
 
     
     document.getElementById('finalPrice').innerHTML = `Sales per unit: €${salesPerAmount.toFixed(2)}`;
