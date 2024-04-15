@@ -432,30 +432,22 @@ select option {
             "material9": 2.10
         };
 
-    //let density;  // Declare density here
         const density = materialDensities[material];
         let convertedAmountLabel = '';
 
-        
-
         if (given === 'volume' && wanted === 'volume') {
             convertedAmountLabel = 'Volume';
-        //density = materialDensities[material];  // Assign value here
             convertedAmount = amount;
         } else if (given === 'volume' && wanted === 'mass') {
             convertedAmountLabel = 'Mass';
-            //density = materialDensities[material];  // Assign value here
             convertedAmount = amount * density;
         } else if (given === 'mass' && wanted === 'volume') {
             convertedAmountLabel = 'Volume';
-            //density = materialDensities[material];  // Assign value here
             convertedAmount = amount / density;
         } else if (given === 'mass' && wanted === 'mass') {
             convertedAmountLabel = 'Mass';
-            //density = materialDensities[material];  // Assign value here
             convertedAmount = amount;
         } else {
-        // Handle the case where given and wanted are not handled explicitly
             console.error("Unsupported conversion units");
             return;
         }
@@ -465,20 +457,12 @@ select option {
         document.getElementById('densityResult').innerHTML = `Density: ${density} kg/m³`;
         document.getElementById('convertedAmountResult').innerHTML = `${convertedAmountLabel}: ${convertedAmount.toFixed(2)} (${unit})`;
 
-
         if (convertedAmountLabel === 'Volume') {
             toursConvertedAmount = convertedAmount * density;
-        }
-        else{
+        } else {
             toursConvertedAmount = convertedAmount;
         }
-
-
-
-        
     }
-
-    
 
     function showTimeResults() {
         const numberOfVehicles = document.getElementById('numberOfVehicles').value;
@@ -489,9 +473,6 @@ select option {
 
         const cycleTime = 2 * travelTime + loadingTime + unloadingTime;
                 
-        
-       
-
         const vehicleType = document.getElementById('vehicleType').value;
         const vehicleInfo = {
             "3-Achser": { weight: 12 },
@@ -502,15 +483,9 @@ select option {
         };
         const weightOfSelectedVehicle = vehicleInfo[vehicleType].weight;
 
-        
-                // Corrected formula for number of tours
-                const numberOfTours = toursConvertedAmount / weightOfSelectedVehicle;
-
-                // Calculate total time required to finish the job
-const totalWorkingTime = numberOfTours * cycleTime; // Total time required to finish the job
-
-// Calculate number of working days
-const numberOfWorkingDays = totalWorkingTime / (numberOfVehicles * workingHours * 60); // Convert working hours to minutes
+        const numberOfTours = toursConvertedAmount / weightOfSelectedVehicle;
+        const totalWorkingTime = numberOfTours * cycleTime;
+        const numberOfWorkingDays = totalWorkingTime / (numberOfVehicles * workingHours * 60);
     
         document.getElementById('numberOfVehiclesResult').innerHTML = `Number of Vehicles: ${numberOfVehicles}`;
         document.getElementById('workingHoursResult').innerHTML = `Working Hours≈ ${workingHours}`;
@@ -522,20 +497,14 @@ const numberOfWorkingDays = totalWorkingTime / (numberOfVehicles * workingHours 
             numberOfTours: numberOfTours,
             cycleTime: cycleTime,
             numberOfWorkingDays: numberOfWorkingDays
-
         }
-
-              
     }
 
     function showVehicleResults() {
-
         const { numberOfTours, cycleTime, numberOfWorkingDays } = showTimeResults();
-
         const numberOfVehicles = parseInt(document.getElementById('numberOfVehicles').value);
         const vehicleType = document.getElementById('vehicleType').value;
         const actualPurchasePrice = parseFloat(document.getElementById('actualPurchasePrice').value);
-        
         
         const vehicleInfo = {
             "3-Achser": { weight: 12, stundensatz: 65, vk: 75, proMinute: 1.25, beEntladezeit: 15, minPrice: 67.50, maxPrice: 72.50 },
@@ -551,21 +520,14 @@ const numberOfWorkingDays = totalWorkingTime / (numberOfVehicles * workingHours 
         document.getElementById('minVehiclePriceSales').innerHTML = `Min Price (per hour): €${minPrice}`;
         document.getElementById('maxVehiclePriceSales').innerHTML = `Max Price (per hour): €${maxPrice}`;
 
-
-
         const weight = vehicleInfo[vehicleType].weight;
         const totalPurchasePrice = ((cycleTime * numberOfTours)/60)*actualPurchasePrice;
         const perTonPrice = totalPurchasePrice / toursConvertedAmount;
-
         const avgPrice = (minPrice + maxPrice) / 2;
         const avgPricePerTonPerHour = avgPrice / weight;
-
-
         const universal = toursConvertedAmount;
         
         document.getElementById('avgPricePerTonPerHour').innerHTML = `Average Price (per ton per hour): €${avgPricePerTonPerHour.toFixed(2)}`;
-
-
         document.getElementById('totalPurchasePriceResult').innerHTML = `Total Purchase Price: €${totalPurchasePrice.toFixed(2)}`;
         document.getElementById('vehicleWeight').innerHTML = `Vehicle Capacity: ${weight} tons`;
         document.getElementById('pricePerTon').innerHTML = `Price per Ton: €${perTonPrice.toFixed(2)}`;
@@ -574,190 +536,142 @@ const numberOfWorkingDays = totalWorkingTime / (numberOfVehicles * workingHours 
             totalPurchasePrice: totalPurchasePrice,
             perTonPrice: perTonPrice,
             universal: universal
-            
         }
-        
-
     }
 
-
-
     function showSalesResults() {
-    const { totalPurchasePrice, perTonPrice, universal } = showVehicleResults();
-    const vehicleType = document.getElementById('vehicleType').value;
-    const numberOfVehicles = parseInt(document.getElementById('numberOfVehicles').value);
+        const { totalPurchasePrice, perTonPrice, universal } = showVehicleResults();
+        const vehicleType = document.getElementById('vehicleType').value;
+        const numberOfVehicles = parseInt(document.getElementById('numberOfVehicles').value);
+        
+        const vehicleInfo = {
+            "3-Achser": { minPrice: 67.50, maxPrice: 72.50, weight: 12 },
+            "4-Achser": { minPrice: 77.50, maxPrice: 82.50, weight: 18 },
+            "5-Achser": { minPrice: 87.50, maxPrice: 92.50, weight: 25 },
+            "Hängerzug": { minPrice: 87.50, maxPrice: 92.50, weight: 23 },
+            "Muldenkipper": { minPrice: 72.50, maxPrice: 77.50, weight: 24 }
+        };
+
+        const minPrice = vehicleInfo[vehicleType].minPrice;
+        const capacity = vehicleInfo[vehicleType].weight;
+
+        const actualPurchasePrice = parseFloat(document.getElementById('actualPurchasePrice').value);
+        const marginPercentage = parseFloat(document.getElementById('marginPercentage').value);
     
-    const vehicleInfo = {
-        "3-Achser": { minPrice: 67.50, maxPrice: 72.50, weight: 12 },
-        "4-Achser": { minPrice: 77.50, maxPrice: 82.50, weight: 18 },
-        "5-Achser": { minPrice: 87.50, maxPrice: 92.50, weight: 25 },
-        "Hängerzug": { minPrice: 87.50, maxPrice: 92.50, weight: 23 },
-        "Muldenkipper": { minPrice: 72.50, maxPrice: 77.50, weight: 24 }
-    };
+        const marginAmount = totalPurchasePrice * (marginPercentage / 100);
+        const salesPerAmount = perTonPrice * (1 + marginPercentage / 100);
+        const totalSalesResult = salesPerAmount * universal;
 
-    const minPrice = vehicleInfo[vehicleType].minPrice;
-    const capacity = vehicleInfo[vehicleType].weight;
+        document.getElementById('finalPrice').innerHTML = `Sales per unit: €${salesPerAmount.toFixed(2)}`;
+        document.getElementById('totalPrice').innerHTML = `Total Sales: €${totalSalesResult.toFixed(2)}`;
+    }
 
-    const actualPurchasePrice = parseFloat(document.getElementById('actualPurchasePrice').value);
-    const marginPercentage = parseFloat(document.getElementById('marginPercentage').value);
+    function showDisposalResults() {
+        const material = document.getElementById('material').value;
+        const amount = parseFloat(document.getElementById('amount').value);
+        const disposalPrice = parseFloat(document.getElementById('disposalPrice').value);
+        const additionalCosts = parseFloat(document.getElementById('additionalCosts').value);
+        const totalDisposalPrice = convertedAmount * disposalPrice + additionalCosts;
+        document.getElementById('totalDisposalPrice').innerHTML = `Total Disposal Price: €${totalDisposalPrice.toFixed(2)}`;
+    }
 
-    
-    const marginAmount = totalPurchasePrice * (marginPercentage / 100);
-    const salesPerAmount = perTonPrice * (1 + marginPercentage / 100); // Corrected calculation
-    const totalSalesResult = salesPerAmount * universal;
+    function showDisposalSalesResults() {
+        const marginDisposalSales = parseFloat(document.getElementById('marginDisposalSales').value);
+        const totalDisposalPrice = parseFloat(document.getElementById('totalDisposalPrice').innerText.replace('Total Disposal Price: €', ''));
+        const marginAmountDisposalSales = totalDisposalPrice * (marginDisposalSales / 100);
+        const disposalSalesPerUnit = (totalDisposalPrice + marginAmountDisposalSales) / convertedAmount;
+        const totalDisposalSalesPrice = disposalSalesPerUnit * convertedAmount;
+        document.getElementById('disposalSalesPerUnit').innerHTML = `Disposal Sales Per Unit: €${disposalSalesPerUnit.toFixed(2)}`;
+        document.getElementById('disposalSalesResult').innerHTML = `Disposal Sales Result: €${totalDisposalSalesPrice.toFixed(2)}`;
+    }
 
-    
-    document.getElementById('finalPrice').innerHTML = `Sales per unit: €${salesPerAmount.toFixed(2)}`;
-    document.getElementById('totalPrice').innerHTML = `Total Sales: €${totalSalesResult.toFixed(2)}`;
-}
-
-
-function showDisposalResults() {
-    // Retrieve material and amount from the Material section
-    const material = document.getElementById('material').value;
-    const amount = parseFloat(document.getElementById('amount').value);
-
-    // Retrieve disposal price and additional costs
-    const disposalPrice = parseFloat(document.getElementById('disposalPrice').value);
-    const additionalCosts = parseFloat(document.getElementById('additionalCosts').value);
-
-    // Calculate total disposal price
-    const totalDisposalPrice = convertedAmount * disposalPrice + additionalCosts;
-
-    // Display total disposal price
-    document.getElementById('totalDisposalPrice').innerHTML = `Total Disposal Price: €${totalDisposalPrice.toFixed(2)}`;
-}
-
-function showDisposalSalesResults() {
-    const marginDisposalSales = parseFloat(document.getElementById('marginDisposalSales').value);
-    const totalDisposalPrice = parseFloat(document.getElementById('totalDisposalPrice').innerText.replace('Total Disposal Price: €', ''));
-    //const convertedAmount = parseFloat(document.getElementById('amount').value); // Adding missing conversion factor
-
-    // Calculate margin amount and disposal sales price per unit
-    const marginAmountDisposalSales = totalDisposalPrice * (marginDisposalSales / 100);
-    const disposalSalesPerUnit = (totalDisposalPrice + marginAmountDisposalSales) / convertedAmount;
-
-    const totalDisposalSalesPrice = disposalSalesPerUnit * convertedAmount;
-
-    // Display disposal sales price including transport
-    document.getElementById('disposalSalesPerUnit').innerHTML = `Disposal Sales Per Unit: €${disposalSalesPerUnit.toFixed(2)}`;
-    document.getElementById('disposalSalesResult').innerHTML = `Disposal Sales Result: €${totalDisposalSalesPrice.toFixed(2)}`;
-}
-
-
-function showMarginResults() {
-    const { totalPurchasePrice } = showVehicleResults();
-    const marginPercentage = parseFloat(document.getElementById('marginPercentage').value);
-    //const convertedAmount = parseFloat(document.getElementById('amount').value); // Adding missing conversion factor
-
-    // Calculate margin per unit and total margin
-    const marginAmount = totalPurchasePrice * (marginPercentage / 100);
-    const marginPerUnit = marginAmount / convertedAmount; // Calculate margin per unit correctly
-    const totalMargin = marginAmount;
-
-    // Display margin per unit and total margin
-    document.getElementById('marginPerUnit').innerHTML = `Margin per Unit: €${marginPerUnit.toFixed(2)}`;
-    document.getElementById('totalMargin').innerHTML = `Total Margin: €${totalMargin.toFixed(2)}`;
-}
-
-function showMarginResultsDisposal() {
-    const { totalPurchasePrice } = showVehicleResults();
-    const marginPercentage = parseFloat(document.getElementById('marginDisposalSales').value);
-    const totalDisposalPrice = parseFloat(document.getElementById('totalDisposalPrice').innerText.replace('Total Disposal Price: €', ''));
-    //const convertedAmount = parseFloat(document.getElementById('amount').value); // Adding missing conversion factor
-
-    // Calculate margin per unit and total margin for disposal
-    const marginAmountDisposal = totalDisposalPrice * (marginPercentage / 100);
-    const marginPerUnitDisposal = marginAmountDisposal / convertedAmount; // Calculate margin per unit correctly
-    const totalMarginDisposal = marginAmountDisposal;
-
-    // Display margin per unit and total margin for disposal
-    document.getElementById('marginPerUnitDisposal').innerHTML = `Margin per Unit: €${marginPerUnitDisposal.toFixed(2)}`;
-    document.getElementById('totalMarginDisposal').innerHTML = `Total Margin: €${totalMarginDisposal.toFixed(2)}`;
-}
-
-
-            // New function to update the Summary section
-    function updateSummary() {
-
-
+    function showMarginResults() {
         const { totalPurchasePrice } = showVehicleResults();
-    // Update the Summary section with calculated results
-    document.getElementById('convertedAmountResultSummary').innerHTML = document.getElementById('convertedAmountResult').innerHTML;
-    document.getElementById('vehicleWeightSummary').innerHTML = document.getElementById('vehicleWeight').innerHTML;
-    document.getElementById('numberOfVehiclesResultSummary').innerHTML = document.getElementById('numberOfVehiclesResult').innerHTML;
-    document.getElementById('workingHoursResultSummary').innerHTML = document.getElementById('workingHoursResult').innerHTML;
-    document.getElementById('cycleTimeResultSummary').innerHTML = document.getElementById('cycleTimeResult').innerHTML;
-    document.getElementById('numberOfToursResultSummary').innerHTML = document.getElementById('numberOfToursResult').innerHTML;
-    document.getElementById('numberOfWorkingDaysResultSummary').innerHTML = document.getElementById('numberOfWorkingDaysResult').innerHTML;
-    document.getElementById('finalPriceSummary').innerHTML = document.getElementById('finalPrice').innerHTML;
-    document.getElementById('disposalMaterialInfoSummary').innerHTML = document.getElementById('disposalMaterialInfo').innerHTML;
-    
-    // Remaining lines for other information in the summary
+        const marginPercentage = parseFloat(document.getElementById('marginPercentage').value);
+        const marginAmount = totalPurchasePrice * (marginPercentage / 100);
+        const marginPerUnit = marginAmount / convertedAmount;
+        const totalMargin = marginAmount;
+        document.getElementById('marginPerUnit').innerHTML = `Margin per Unit: €${marginPerUnit.toFixed(2)}`;
+        document.getElementById('totalMargin').innerHTML = `Total Margin: €${totalMargin.toFixed(2)}`;
+    }
 
-    // Retrieve actual purchase price, margin percentage, and converted amount
-    //const actualPurchasePrice = parseFloat(document.getElementById('actualPurchasePrice').value);
-    const marginPercentage = parseFloat(document.getElementById('marginPercentage').value);
-    const convertedAmount = parseFloat(document.getElementById('amount').value);
+    function showMarginResultsDisposal() {
+        const { totalPurchasePrice } = showVehicleResults();
+        const marginPercentage = parseFloat(document.getElementById('marginDisposalSales').value);
+        const totalDisposalPrice = parseFloat(document.getElementById('totalDisposalPrice').innerText.replace('Total Disposal Price: €', ''));
+        const marginAmountDisposal = totalDisposalPrice * (marginPercentage / 100);
+        const marginPerUnitDisposal = marginAmountDisposal / convertedAmount;
+        const totalMarginDisposal = marginAmountDisposal;
+        document.getElementById('marginPerUnitDisposal').innerHTML = `Margin per Unit: €${marginPerUnitDisposal.toFixed(2)}`;
+        document.getElementById('totalMarginDisposal').innerHTML = `Total Margin: €${totalMarginDisposal.toFixed(2)}`;
+    }
 
-    // Calculate total sales amount
-    const marginAmount = totalPurchasePrice * (marginPercentage / 100);
-    const salesPerAmount = totalPurchasePrice + marginAmount;
-    const totalSalesAmount = salesPerAmount * convertedAmount;
+    function updateSummary() {
+        const { totalPurchasePrice } = showVehicleResults();
+        document.getElementById('convertedAmountResultSummary').innerHTML = document.getElementById('convertedAmountResult').innerHTML;
+        document.getElementById('vehicleWeightSummary').innerHTML = document.getElementById('vehicleWeight').innerHTML;
+        document.getElementById('numberOfVehiclesResultSummary').innerHTML = document.getElementById('numberOfVehiclesResult').innerHTML;
+        document.getElementById('workingHoursResultSummary').innerHTML = document.getElementById('workingHoursResult').innerHTML;
+        document.getElementById('cycleTimeResultSummary').innerHTML = document.getElementById('cycleTimeResult').innerHTML;
+        document.getElementById('numberOfToursResultSummary').innerHTML = document.getElementById('numberOfToursResult').innerHTML;
+        document.getElementById('numberOfWorkingDaysResultSummary').innerHTML = document.getElementById('numberOfWorkingDaysResult').innerHTML;
 
-    // Display total sales amount
-    document.getElementById('totalSalesAmountSummary').innerHTML = `Total Sales Amount: €${totalSalesAmount.toFixed(2)}`;
+        const marginPercentage = parseFloat(document.getElementById('marginPercentage').value);
+        const convertedAmount = parseFloat(document.getElementById('amount').value);
+        const marginAmount = totalPurchasePrice * (marginPercentage / 100);
+        const salesPerAmount = totalPurchasePrice + marginAmount;
+        const totalSalesAmount = salesPerAmount * convertedAmount;
+        document.getElementById('totalSalesAmountSummary').innerHTML = `Total Sales Amount: €${totalSalesAmount.toFixed(2)}`;
 
-            // Retrieve total disposal price, margin disposal sales, and include transport value
-            const totalDisposalPrice = parseFloat(document.getElementById('totalDisposalPrice').innerText.replace('Total Disposal Price: €', ''));
-            const marginDisposalSales = parseFloat(document.getElementById('marginDisposalSales').value);
-            const includeTransport = document.getElementById('includeTransportSummary').value;
-
-            
-
-
+        const totalDisposalPrice = parseFloat(document.getElementById('totalDisposalPrice').innerText.replace('Total Disposal Price: €', ''));
+        const marginDisposalSales = parseFloat(document.getElementById('marginDisposalSales').value);
+        const includeTransport = document.getElementById('includeTransportSummary').value;
     }
 
     document.getElementById('includeTransportSummary').addEventListener('change', function () {
-    updateFinalPriceDisplay();
-    calculateAll();
+        updateFinalPriceDisplay();
+        calculateAll();
+    });
 
-});
+    function updateFinalPriceDisplay() {
+        const includeTransportOption = document.getElementById('includeTransportSummary').value;
 
-            
+        if (includeTransportOption === 'disposalOnly') {
+            document.getElementById('finalPricePerUnit').innerHTML = document.getElementById('disposalSalesPerUnit').innerHTML;
+            document.getElementById('totalFinalPrice').innerHTML = document.getElementById('disposalSalesResult').innerHTML;
+        } else if (includeTransportOption === 'transportOnly') {
+            document.getElementById('finalPricePerUnit').innerHTML = document.getElementById('finalPrice').innerHTML;
+            document.getElementById('totalFinalPrice').innerHTML = document.getElementById('totalPrice').innerHTML;
+        } else if (includeTransportOption === 'both') {
+            const disposalSalesPerUnit = parseFloat(document.getElementById('disposalSalesPerUnit').innerText.replace('Disposal Sales Per Unit: €', ''));
+            const finalPrice = parseFloat(document.getElementById('finalPrice').innerText.replace('Sales per unit: €', ''));
+            const bothPerUnit = disposalSalesPerUnit + finalPrice;
+            document.getElementById('finalPricePerUnit').innerHTML = `Final Price Per Unit: €${bothPerUnit.toFixed(2)}`;
 
-            function updateFinalPriceDisplay() {
-    const includeTransportOption = document.getElementById('includeTransportSummary').value;
-
-    if (includeTransportOption === 'disposalOnly') {
-        document.getElementById('finalPricePerUnit').innerHTML = document.getElementById('disposalSalesPerUnit').innerHTML;
-        document.getElementById('totalFinalPrice').innerHTML = document.getElementById('disposalSalesResult').innerHTML;
-    } else if (includeTransportOption === 'transportOnly') {
-        document.getElementById('finalPricePerUnit').innerHTML = document.getElementById('finalPrice').innerHTML;
-        document.getElementById('totalFinalPrice').innerHTML = document.getElementById('totalPrice').innerHTML;
-    } else if (includeTransportOption === 'both') {
-        // Handle both scenario
-        const disposalSalesPerUnit = parseFloat(document.getElementById('disposalSalesPerUnit').innerText.replace('Disposal Sales Per Unit: €', ''));
-        const finalPrice = parseFloat(document.getElementById('finalPrice').innerText.replace('Sales per unit: €', ''));
-
-        // Calculate the addition of per unit values
-        const bothPerUnit = disposalSalesPerUnit + finalPrice;
-
-        // Display the addition of per unit values
-        document.getElementById('finalPricePerUnit').innerHTML = `Per Unit: €${bothPerUnit.toFixed(2)}`;
-
-        // Retrieve and calculate the addition of total values
-        const totalDisposalSales = parseFloat(document.getElementById('disposalSalesResult').innerText.replace('Disposal Sales Result: €', ''));
-        const totalPrice = parseFloat(document.getElementById('totalPrice').innerText.replace('Total Sales: €', ''));
-        const bothTotal = totalDisposalSales + totalPrice;
-
-        // Display the addition of total values
-        document.getElementById('totalFinalPrice').innerHTML = `Total: €${bothTotal.toFixed(2)}`;
+            const disposalSalesResult = parseFloat(document.getElementById('disposalSalesResult').innerText.replace('Disposal Sales Result: €', ''));
+            const totalPrice = parseFloat(document.getElementById('totalPrice').innerText.replace('Total Sales: €', ''));
+            const totalBoth = disposalSalesResult + totalPrice;
+            document.getElementById('totalFinalPrice').innerHTML = `Total Final Price: €${totalBoth.toFixed(2)}`;
+        }
     }
-}
 
-// Initial call to set the initial display based on the default selected option
-updateFinalPriceDisplay();
+    function calculateTotal() {
+        const totalSalesAmount = parseFloat(document.getElementById('totalSalesAmountSummary').innerText.replace('Total Sales Amount: €', ''));
+        const totalFinalPrice = parseFloat(document.getElementById('totalFinalPrice').innerText.replace('Total Final Price: €', ''));
+        const totalCost = totalSalesAmount - totalFinalPrice;
+        document.getElementById('totalCost').innerHTML = `Total Cost: €${totalCost.toFixed(2)}`;
+    }
+
+    // Instantly update prices when a vehicle is selected
+    document.getElementById('vehicleType').addEventListener('change', function () {
+        showVehicleResults();
+        showSalesResults();
+        showMarginResults();
+        showMarginResultsDisposal();
+        updateSummary();
+        calculateTotal();
+    });
+
 
 function copySummaryToClipboard() {
     // Array of element IDs and their corresponding labels to copy to the clipboard
