@@ -232,8 +232,7 @@ select option {
                 <h3>Ergebnisse</h3>
             <p id="densityResult"></p>
             <p id="convertedAmountResult"></p></div>
-            <h3>Masse zu Volumen</h3>
-            <b>Volumen = Masse / Dichte</b>
+            
         </div>
 
 
@@ -388,6 +387,8 @@ select option {
     <h3>Endpreise</h3>
     <p id="finalPricePerUnit"></p>
     <p id="totalFinalPrice"></p>
+    <h3>Preis im Volumen</h3>
+            <b>Volumen = Masse  Dichte</b>
 </div>
 <button onclick="copySummaryToClipboard()">Kopieren</button>
 
@@ -579,16 +580,21 @@ select option {
         const additionalCosts = parseFloat(document.getElementById('additionalCosts').value);
         const totalDisposalPrice = convertedAmount * disposalPrice + additionalCosts;
         document.getElementById('totalDisposalPrice').innerHTML = `EK Gesamt: €${totalDisposalPrice.toFixed(2)}`;
+
+        return{
+            totalDisposalPrice : totalDisposalPrice
+        }
     }
 
     function showDisposalSalesResults() {
+        const {totalDisposalPrice} = showDisposalResults();
         const marginDisposalSales = parseFloat(document.getElementById('marginDisposalSales').value);
-        const totalDisposalPrice = parseFloat(document.getElementById('totalDisposalPrice').innerText.replace('Total Disposal Price: €', ''));
         const marginAmountDisposalSales = totalDisposalPrice * (marginDisposalSales / 100);
         const disposalSalesPerUnit = (totalDisposalPrice + marginAmountDisposalSales) / convertedAmount;
         const totalDisposalSalesPrice = disposalSalesPerUnit * convertedAmount;
         document.getElementById('disposalSalesPerUnit').innerHTML = `Entsorgung VK pro Einheit: €${disposalSalesPerUnit.toFixed(2)}`;
         document.getElementById('disposalSalesResult').innerHTML = `Entsorgung VK Gesamt: €${totalDisposalSalesPrice.toFixed(2)}`;
+    
     }
 
     function showMarginResults() {
@@ -599,17 +605,20 @@ select option {
         const totalMargin = marginAmount;
         document.getElementById('marginPerUnit').innerHTML = `Marge pro Einheit: €${marginPerUnit.toFixed(2)}`;
         document.getElementById('totalMargin').innerHTML = `Marge Gesamt: €${totalMargin.toFixed(2)}`;
+
+
     }
 
     function showMarginResultsDisposal() {
-        const { totalPurchasePrice } = showVehicleResults();
+        const { totalDisposalPrice } = showDisposalResults();
         const marginPercentage = parseFloat(document.getElementById('marginDisposalSales').value);
-        const totalDisposalPrice = parseFloat(document.getElementById('totalDisposalPrice').innerText.replace('Total Disposal Price: €', ''));
         const marginAmountDisposal = totalDisposalPrice * (marginPercentage / 100);
         const marginPerUnitDisposal = marginAmountDisposal / convertedAmount;
         const totalMarginDisposal = marginAmountDisposal;
         document.getElementById('marginPerUnitDisposal').innerHTML = `Marge pro Einheit: €${marginPerUnitDisposal.toFixed(2)}`;
         document.getElementById('totalMarginDisposal').innerHTML = `Marge Gesamt: €${totalMarginDisposal.toFixed(2)}`;
+
+
     }
 
     function updateSummary() {
@@ -627,6 +636,10 @@ select option {
         const marginAmount = totalPurchasePrice * (marginPercentage / 100);
         const salesPerAmount = totalPurchasePrice + marginAmount;
         const totalSalesAmount = salesPerAmount * convertedAmount;
+
+
+
+        
         document.getElementById('totalSalesAmountSummary').innerHTML = `VK Gesamt: €${totalSalesAmount.toFixed(2)}`;
 
         const totalDisposalPrice = parseFloat(document.getElementById('totalDisposalPrice').innerText.replace('Total Disposal Price: €', ''));
@@ -649,13 +662,13 @@ select option {
             document.getElementById('finalPricePerUnit').innerHTML = document.getElementById('finalPrice').innerHTML;
             document.getElementById('totalFinalPrice').innerHTML = document.getElementById('totalPrice').innerHTML;
         } else if (includeTransportOption === 'both') {
-            const disposalSalesPerUnit = parseFloat(document.getElementById('disposalSalesPerUnit').innerText.replace('Disposal Sales Per Unit: €', ''));
-            const finalPrice = parseFloat(document.getElementById('finalPrice').innerText.replace('Sales per unit: €', ''));
+            const disposalSalesPerUnit = parseFloat(document.getElementById('disposalSalesPerUnit').innerHTML);
+            const finalPrice = parseFloat(document.getElementById('finalPrice').innerHTML);
             const bothPerUnit = disposalSalesPerUnit + finalPrice;
             document.getElementById('finalPricePerUnit').innerHTML = `Final Price Per Unit: €${bothPerUnit.toFixed(2)}`;
 
-            const disposalSalesResult = parseFloat(document.getElementById('disposalSalesResult').innerText.replace('Disposal Sales Result: €', ''));
-            const totalPrice = parseFloat(document.getElementById('totalPrice').innerText.replace('Total Sales: €', ''));
+            const disposalSalesResult = parseFloat(document.getElementById('disposalSalesResult').innerHTML);
+            const totalPrice = parseFloat(document.getElementById('totalPrice').innerHTML);
             const totalBoth = disposalSalesResult + totalPrice;
             document.getElementById('totalFinalPrice').innerHTML = `Total Final Price: €${totalBoth.toFixed(2)}`;
         }
