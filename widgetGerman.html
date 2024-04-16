@@ -646,12 +646,12 @@ select option {
         const convertedAmount = parseFloat(document.getElementById('amount').value);
         const marginAmount = totalPurchasePrice * (marginPercentage / 100);
         const salesPerAmount = totalPurchasePrice + marginAmount;
-        const totalSalesAmount = salesPerAmount * convertedAmount;
+        //const totalSalesAmount = salesPerAmount * convertedAmount;
 
 
 
         
-        document.getElementById('totalSalesAmountSummary').innerHTML = `VK Gesamt: €${totalSalesAmount.toFixed(2)}`;
+        //document.getElementById('totalSalesAmountSummary').innerHTML = `VK Gesamt: €${totalSalesAmount.toFixed(2)}`;
 
         const totalDisposalPrice = parseFloat(document.getElementById('totalDisposalPrice').innerText.replace('Total Disposal Price: €', ''));
         const marginDisposalSales = parseFloat(document.getElementById('marginDisposalSales').value);
