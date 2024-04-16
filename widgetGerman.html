@@ -223,7 +223,7 @@ select option {
 
             <label for="wanted">Maßeinheit Output:</label>
             <select id="wanted" name="wanted" required>
-                <option value="volume">Kubikmeter</option>
+                <!-- <option value="volume">Kubikmeter</option> -->
                 <option value="mass">Tonnen</option>
             </select>
 
@@ -232,6 +232,8 @@ select option {
                 <h3>Ergebnisse</h3>
             <p id="densityResult"></p>
             <p id="convertedAmountResult"></p></div>
+            <h3>Masse zu Volumen</h3>
+            <b>Volumen = Masse / Dichte</b>
         </div>
 
 
@@ -453,9 +455,9 @@ select option {
             return;
         }
 
-        const unit = wanted === 'mass' ? 'Tons' : 'Cubic Meters';
+        const unit = wanted === 'mass' ? 'Tonnen' : 'Kubikmeter';
 
-        document.getElementById('densityResult').innerHTML = `Density: ${density} kg/m³`;
+        document.getElementById('densityResult').innerHTML = `Dichte: ${density} kg/m³`;
         document.getElementById('convertedAmountResult').innerHTML = `${convertedAmountLabel}: ${convertedAmount.toFixed(2)} (${unit})`;
 
         if (convertedAmountLabel === 'Volume') {
@@ -576,7 +578,7 @@ select option {
         const disposalPrice = parseFloat(document.getElementById('disposalPrice').value);
         const additionalCosts = parseFloat(document.getElementById('additionalCosts').value);
         const totalDisposalPrice = convertedAmount * disposalPrice + additionalCosts;
-        document.getElementById('totalDisposalPrice').innerHTML = `Total Disposal Price: €${totalDisposalPrice.toFixed(2)}`;
+        document.getElementById('totalDisposalPrice').innerHTML = `EK Gesamt: €${totalDisposalPrice.toFixed(2)}`;
     }
 
     function showDisposalSalesResults() {
