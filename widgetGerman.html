@@ -488,11 +488,11 @@ select option {
         const totalWorkingTime = numberOfTours * cycleTime;
         const numberOfWorkingDays = totalWorkingTime / (numberOfVehicles * workingHours * 60);
     
-        document.getElementById('numberOfVehiclesResult').innerHTML = `Number of Vehicles: ${numberOfVehicles}`;
-        document.getElementById('workingHoursResult').innerHTML = `Working Hours≈ ${workingHours}`;
-        document.getElementById('cycleTimeResult').innerHTML = `Cycle Time≈ ${cycleTime.toFixed(2)} minutes`;
-        document.getElementById('numberOfToursResult').innerHTML = `Number of Tours≈ ${numberOfTours.toFixed(2)}`;
-        document.getElementById('numberOfWorkingDaysResult').innerHTML = `Number of Working Days≈ ${numberOfWorkingDays.toFixed(2)}`;
+        document.getElementById('numberOfVehiclesResult').innerHTML = `Anzahl Fahrzeuge: ${numberOfVehicles}`;
+        document.getElementById('workingHoursResult').innerHTML = `Arbeitsstunden pro Tag≈ ${workingHours}`;
+        document.getElementById('cycleTimeResult').innerHTML = `Umlaufzeit≈ ${cycleTime.toFixed(2)} minutes`;
+        document.getElementById('numberOfToursResult').innerHTML = `Anzahl an Umläufe≈ ${numberOfTours.toFixed(2)}`;
+        document.getElementById('numberOfWorkingDaysResult').innerHTML = `Anzahl Arbeitstage≈ ${numberOfWorkingDays.toFixed(2)}`;
 
         return {
             numberOfTours: numberOfTours,
@@ -521,8 +521,8 @@ select option {
         const minPrice = vehicleInfo[vehicleType].minPrice;
         const maxPrice = vehicleInfo[vehicleType].maxPrice;
         
-        document.getElementById('minVehiclePriceSales').innerHTML = `Min Price (per hour): €${minPrice}`;
-        document.getElementById('maxVehiclePriceSales').innerHTML = `Max Price (per hour): €${maxPrice}`;
+        document.getElementById('minVehiclePriceSales').innerHTML = `Zielpreis pro Stunde: €${minPrice}`;
+        document.getElementById('maxVehiclePriceSales').innerHTML = `Max Preis pro Stunde: €${maxPrice}`;
 
         const weight = vehicleInfo[vehicleType].weight;
         const totalPurchasePrice = ((cycleTime * numberOfTours)/60)*actualPurchasePrice;
@@ -531,10 +531,10 @@ select option {
         const avgPricePerTonPerHour = avgPrice / weight;
         const universal = toursConvertedAmount;
         
-        document.getElementById('avgPricePerTonPerHour').innerHTML = `Average Price (per ton per hour): €${avgPricePerTonPerHour.toFixed(2)}`;
-        document.getElementById('totalPurchasePriceResult').innerHTML = `Total Purchase Price: €${totalPurchasePrice.toFixed(2)}`;
-        document.getElementById('vehicleWeight').innerHTML = `Vehicle Capacity: ${weight} tons`;
-        document.getElementById('pricePerTon').innerHTML = `Price per Ton: €${perTonPrice.toFixed(2)}`;
+        document.getElementById('avgPricePerTonPerHour').innerHTML = `EK pro Tonne & Stunde: €${avgPricePerTonPerHour.toFixed(2)}`;
+        document.getElementById('totalPurchasePriceResult').innerHTML = `EK Gesamt: €${totalPurchasePrice.toFixed(2)}`;
+        document.getElementById('vehicleWeight').innerHTML = `Ladekapazität: ${weight} tons`;
+        document.getElementById('pricePerTon').innerHTML = `Preis pro Tonne: €${perTonPrice.toFixed(2)}`;
 
         return {
             totalPurchasePrice: totalPurchasePrice,
@@ -566,8 +566,8 @@ select option {
         const salesPerAmount = perTonPrice * (1 + marginPercentage / 100);
         const totalSalesResult = salesPerAmount * universal;
 
-        document.getElementById('finalPrice').innerHTML = `Sales per unit: €${salesPerAmount.toFixed(2)}`;
-        document.getElementById('totalPrice').innerHTML = `Total Sales: €${totalSalesResult.toFixed(2)}`;
+        document.getElementById('finalPrice').innerHTML = `VK pro Einheit: €${salesPerAmount.toFixed(2)}`;
+        document.getElementById('totalPrice').innerHTML = `VK Gesamt: €${totalSalesResult.toFixed(2)}`;
     }
 
     function showDisposalResults() {
@@ -585,8 +585,8 @@ select option {
         const marginAmountDisposalSales = totalDisposalPrice * (marginDisposalSales / 100);
         const disposalSalesPerUnit = (totalDisposalPrice + marginAmountDisposalSales) / convertedAmount;
         const totalDisposalSalesPrice = disposalSalesPerUnit * convertedAmount;
-        document.getElementById('disposalSalesPerUnit').innerHTML = `Disposal Sales Per Unit: €${disposalSalesPerUnit.toFixed(2)}`;
-        document.getElementById('disposalSalesResult').innerHTML = `Disposal Sales Result: €${totalDisposalSalesPrice.toFixed(2)}`;
+        document.getElementById('disposalSalesPerUnit').innerHTML = `Entsorgung VK pro Einheit: €${disposalSalesPerUnit.toFixed(2)}`;
+        document.getElementById('disposalSalesResult').innerHTML = `Entsorgung VK Gesamt: €${totalDisposalSalesPrice.toFixed(2)}`;
     }
 
     function showMarginResults() {
@@ -595,8 +595,8 @@ select option {
         const marginAmount = totalPurchasePrice * (marginPercentage / 100);
         const marginPerUnit = marginAmount / convertedAmount;
         const totalMargin = marginAmount;
-        document.getElementById('marginPerUnit').innerHTML = `Margin per Unit: €${marginPerUnit.toFixed(2)}`;
-        document.getElementById('totalMargin').innerHTML = `Total Margin: €${totalMargin.toFixed(2)}`;
+        document.getElementById('marginPerUnit').innerHTML = `Marge pro Einheit: €${marginPerUnit.toFixed(2)}`;
+        document.getElementById('totalMargin').innerHTML = `Marge Gesamt: €${totalMargin.toFixed(2)}`;
     }
 
     function showMarginResultsDisposal() {
@@ -606,8 +606,8 @@ select option {
         const marginAmountDisposal = totalDisposalPrice * (marginPercentage / 100);
         const marginPerUnitDisposal = marginAmountDisposal / convertedAmount;
         const totalMarginDisposal = marginAmountDisposal;
-        document.getElementById('marginPerUnitDisposal').innerHTML = `Margin per Unit: €${marginPerUnitDisposal.toFixed(2)}`;
-        document.getElementById('totalMarginDisposal').innerHTML = `Total Margin: €${totalMarginDisposal.toFixed(2)}`;
+        document.getElementById('marginPerUnitDisposal').innerHTML = `Marge pro Einheit: €${marginPerUnitDisposal.toFixed(2)}`;
+        document.getElementById('totalMarginDisposal').innerHTML = `Marge Gesamt: €${totalMarginDisposal.toFixed(2)}`;
     }
 
     function updateSummary() {
@@ -625,7 +625,7 @@ select option {
         const marginAmount = totalPurchasePrice * (marginPercentage / 100);
         const salesPerAmount = totalPurchasePrice + marginAmount;
         const totalSalesAmount = salesPerAmount * convertedAmount;
-        document.getElementById('totalSalesAmountSummary').innerHTML = `Total Sales Amount: €${totalSalesAmount.toFixed(2)}`;
+        document.getElementById('totalSalesAmountSummary').innerHTML = `VK Gesamt: €${totalSalesAmount.toFixed(2)}`;
 
         const totalDisposalPrice = parseFloat(document.getElementById('totalDisposalPrice').innerText.replace('Total Disposal Price: €', ''));
         const marginDisposalSales = parseFloat(document.getElementById('marginDisposalSales').value);
