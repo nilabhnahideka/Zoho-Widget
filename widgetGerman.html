@@ -509,7 +509,7 @@ select option {
         const numberOfVehicles = parseInt(document.getElementById('numberOfVehicles').value);
         const vehicleType = document.getElementById('vehicleType').value;
         const transportAdditionalCosts = parseFloat(document.getElementById('transportAdditionalCosts').value);
-        const actualPurchasePrice = parseFloat(document.getElementById('actualPurchasePrice').value) + transportAdditionalCosts;
+        const actualPurchasePrice = parseFloat(document.getElementById('actualPurchasePrice').value);
         
 
 
@@ -529,7 +529,7 @@ select option {
         document.getElementById('maxVehiclePriceSales').innerHTML = `Max Preis pro Stunde: €${maxPrice}`;
 
         const weight = vehicleInfo[vehicleType].weight;
-        const totalPurchasePrice = ((cycleTime * numberOfTours)/60)*actualPurchasePrice;
+        const totalPurchasePrice = (((cycleTime * numberOfTours)/60)*actualPurchasePrice) + transportAdditionalCosts;
         const perTonPrice = totalPurchasePrice / toursConvertedAmount;
         const avgPrice = (minPrice + maxPrice) / 2;
         const avgPricePerTonPerHour = avgPrice / weight;
