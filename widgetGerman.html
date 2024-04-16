@@ -286,6 +286,8 @@ select option {
 
             <label for="actualPurchasePrice">Tatsächlicher Einkaufspreis:</label>
             <input type="number" id="actualPurchasePrice" name="actualPurchasePrice" required step="any">
+            <label for="transportAdditionalCosts">Einmalige Kosten:</label>
+            <input type="number" id="transportAdditionalCosts" name="transportAdditionalCosts" required step="any">
 
             <div class="result-section">
                 <h3>Ergebnisse</h3>
@@ -383,13 +385,11 @@ select option {
             <p id="totalDisposalSalesAmountSummary"></p>
 
 
-<div class="result-section">
     <h3>Endpreise</h3>
     <p id="finalPricePerUnit"></p>
     <p id="totalFinalPrice"></p>
     <h3>Preis im Volumen</h3>
             <b>Volumen = Masse * Dichte</b>
-</div>
 <button onclick="copySummaryToClipboard()">Kopieren</button>
 
 
@@ -508,7 +508,8 @@ select option {
         const { numberOfTours, cycleTime, numberOfWorkingDays } = showTimeResults();
         const numberOfVehicles = parseInt(document.getElementById('numberOfVehicles').value);
         const vehicleType = document.getElementById('vehicleType').value;
-        const actualPurchasePrice = parseFloat(document.getElementById('actualPurchasePrice').value);
+        const transportAdditionalCosts = parseFloat(document.getElementById('transportAdditionalCosts').value);
+        const actualPurchasePrice = parseFloat(document.getElementById('actualPurchasePrice').value) + transportAdditionalCosts;
         
 
 
@@ -646,12 +647,7 @@ select option {
         const convertedAmount = parseFloat(document.getElementById('amount').value);
         const marginAmount = totalPurchasePrice * (marginPercentage / 100);
         const salesPerAmount = totalPurchasePrice + marginAmount;
-        //const totalSalesAmount = salesPerAmount * convertedAmount;
-
-
-
         
-        //document.getElementById('totalSalesAmountSummary').innerHTML = `VK Gesamt: €${totalSalesAmount.toFixed(2)}`;
 
         const totalDisposalPrice = parseFloat(document.getElementById('totalDisposalPrice').innerText.replace('Total Disposal Price: €', ''));
         const marginDisposalSales = parseFloat(document.getElementById('marginDisposalSales').value);
@@ -676,11 +672,11 @@ select option {
             const {salesPerAmount, totalSalesResult} = showSalesResults();
             const {disposalSalesPerUnit, totalDisposalSalesPrice} = showDisposalSalesResults();
             const bothPerUnit = salesPerAmount + disposalSalesPerUnit;
-            document.getElementById('finalPricePerUnit').innerHTML = `Final Price Per Unit: €${bothPerUnit.toFixed(2)}`;
+            document.getElementById('finalPricePerUnit').innerHTML = `Gesamtpreis pro Einheit: €${bothPerUnit.toFixed(2)}`;
 
             
             const totalBoth = totalSalesResult + totalDisposalSalesPrice;
-            document.getElementById('totalFinalPrice').innerHTML = `Total Final Price: €${totalBoth.toFixed(2)}`;
+            document.getElementById('totalFinalPrice').innerHTML = `Gesamtpreis: €${totalBoth.toFixed(2)}`;
         }
     }
 
@@ -708,10 +704,11 @@ function copySummaryToClipboard() {
         { id: 'numberOfVehiclesResultSummary', label: '' },
         { id: 'workingHoursResultSummary', label: '' },
         { id: 'cycleTimeResultSummary', label: '' },
+        { id: 'numberOfWorkingDaysResult', label: ''},
         { id: 'numberOfToursResultSummary', label: '' },
         { id: 'disposalSalesPerUnit', label: '' },
-        { id: 'disposalSalesResult', label: '' },
-        { id: 'numberOfWorkingDaysResult', label: ''}
+        { id: 'disposalSalesResult', label: '' }
+        
     ];
 
     // Select the content of the specified elements
