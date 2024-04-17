@@ -687,6 +687,14 @@ select option {
         calculateTotal();
     });
 
+    document.addEventListener("keypress", function(event) {
+    // Check if the key pressed is Enter (key code 13)
+    if (event.keyCode === 13) {
+        // Call the calculateAll function when Enter is pressed
+        calculateAll();
+    }
+});
+
 
 
 
