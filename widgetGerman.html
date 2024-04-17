@@ -355,11 +355,7 @@ select option {
 
         <div class="form-section" id="summarySection">
             <h3>Übersicht</h3>
-<label for="includeTransportSummary">Berechnung</label>
-<select id="includeTransportSummary" name="includeTransportSummary">
-    <option value="transportOnly">Transport</option>
-    <option value="disposalOnly">Entsorgung</option>
-    <option value="both">TP + EN</option>
+   
     
 </select>
             <h4>Material</h4>
@@ -388,9 +384,9 @@ select option {
     <h3>Endpreise</h3>
     <p id="finalPricePerUnit"></p>
     <p id="totalFinalPrice"></p>
+    <p id="totalFinalMargin"></p>
     <h3>Preis im Volumen</h3>
             <b>Volumen = Masse * Dichte</b>
-<button onclick="copySummaryToClipboard()">Kopieren</button>
 
 
 <div class="button-wrapper">
@@ -405,6 +401,7 @@ select option {
 
     function calculateAll() {
         showMaterialResults();
+        updateFinalPriceDisplay();
         showVehicleResults();
         showTimeResults();
         showSalesResults();
@@ -413,6 +410,7 @@ select option {
         showMarginResults();
         showMarginResultsDisposal();
         updateSummary();
+        
         calculateTotal();
     }
 
@@ -575,7 +573,8 @@ select option {
 
         return {
             salesPerAmount : salesPerAmount,
-            totalSalesResult : totalSalesResult
+            totalSalesResult : totalSalesResult,
+            marginAmount : marginAmount
         }
     }
 
@@ -603,7 +602,8 @@ select option {
 
         return {
             disposalSalesPerUnit :disposalSalesPerUnit,
-            totalDisposalSalesPrice : totalDisposalSalesPrice
+            totalDisposalSalesPrice : totalDisposalSalesPrice,
+            marginAmountDisposalSales : marginAmountDisposalSales
 
         }
     
@@ -654,89 +654,38 @@ select option {
         const includeTransport = document.getElementById('includeTransportSummary').value;
     }
 
-    document.getElementById('includeTransportSummary').addEventListener('change', function () {
-        updateFinalPriceDisplay();
-        calculateAll();
-    });
+    
 
     function updateFinalPriceDisplay() {
-        const includeTransportOption = document.getElementById('includeTransportSummary').value;
 
-        if (includeTransportOption === 'disposalOnly') {
-            document.getElementById('finalPricePerUnit').innerHTML = document.getElementById('disposalSalesPerUnit').innerHTML;
-            document.getElementById('totalFinalPrice').innerHTML = document.getElementById('disposalSalesResult').innerHTML;
-        } else if (includeTransportOption === 'transportOnly') {
-            document.getElementById('finalPricePerUnit').innerHTML = document.getElementById('finalPrice').innerHTML;
-            document.getElementById('totalFinalPrice').innerHTML = document.getElementById('totalPrice').innerHTML;
-        } else if (includeTransportOption === 'both') {
-            const {salesPerAmount, totalSalesResult} = showSalesResults();
-            const {disposalSalesPerUnit, totalDisposalSalesPrice} = showDisposalSalesResults();
+        
+            const {salesPerAmount, totalSalesResult, marginAmount} = showSalesResults();
+            const {disposalSalesPerUnit, totalDisposalSalesPrice, marginAmountDisposalSales} = showDisposalSalesResults();
             const bothPerUnit = salesPerAmount + disposalSalesPerUnit;
             document.getElementById('finalPricePerUnit').innerHTML = `Gesamtpreis pro Einheit: €${bothPerUnit.toFixed(2)}`;
 
             
             const totalBoth = totalSalesResult + totalDisposalSalesPrice;
             document.getElementById('totalFinalPrice').innerHTML = `Gesamtpreis: €${totalBoth.toFixed(2)}`;
-        }
-    }
 
-    function calculateTotal() {
-        const totalSalesAmount = parseFloat(document.getElementById('totalSalesAmountSummary').innerText.replace('Total Sales Amount: €', ''));
-        const totalFinalPrice = parseFloat(document.getElementById('totalFinalPrice').innerText.replace('Total Final Price: €', ''));
-        const totalCost = totalSalesAmount - totalFinalPrice;
-        document.getElementById('totalCost').innerHTML = `Total Cost: €${totalCost.toFixed(2)}`;
-    }
+            const totalFinalMargin = marginAmount + marginAmountDisposalSales;
+            document.getElementById('totalFinalMargin').innerHTML = `Marge Gesamt: €${totalFinalMargin.toFixed(2)}`;
+        }
+    
+
 
     document.getElementById('vehicleType').addEventListener('change', function () {
         showVehicleResults();
         showSalesResults();
         showMarginResults();
         showMarginResultsDisposal();
+        updateFinalPriceDisplay();
         updateSummary();
         calculateTotal();
     });
 
 
-function copySummaryToClipboard() {
-    const elementsToCopy = [
-    { id: 'convertedAmountResultSummary', label: '' },
-        { id: 'vehicleWeightSummary', label: '' },
-        { id: 'numberOfVehiclesResultSummary', label: '' },
-        { id: 'workingHoursResultSummary', label: '' },
-        { id: 'cycleTimeResultSummary', label: '' },
-        { id: 'numberOfWorkingDaysResult', label: ''},
-        { id: 'numberOfToursResultSummary', label: '' },
-        { id: 'disposalSalesPerUnit', label: '' },
-        { id: 'disposalSalesResult', label: '' }
-        
-    ];
 
-    // Select the content of the specified elements
-    const summaryContent = elementsToCopy.map(({ id, label }) => {
-        const element = document.getElementById(id);
-        return `${label}: ${element.innerText}`;
-    }).join('\n');
-
-    // Create a temporary textarea element
-    const textarea = document.createElement('textarea');
-    textarea.value = summaryContent;
-
-    // Append the textarea to the body
-    document.body.appendChild(textarea);
-
-    // Select the content of the textarea
-    textarea.select();
-    textarea.setSelectionRange(0, 99999); /* For mobile devices */
-
-    // Copy the selected text to the clipboard
-    document.execCommand('copy');
-
-    // Remove the temporary textarea
-    document.body.removeChild(textarea);
-
-    // Optionally, provide user feedback (you can customize this)
-    alert('Summary copied to clipboard!');
-}
 
         </script>
     </form>
