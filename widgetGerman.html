@@ -586,8 +586,8 @@ select option {
         const additionalCosts = parseFloat(document.getElementById('additionalCosts').value);
         const totalDisposalPrice = convertedAmount * disposalPrice + additionalCosts;
         const totalDisposalPricePerUnit = totalDisposalPrice / convertedAmount
-        document.getElementById('totalDisposalPricePerUnit').innerHTML = `EK Gesamt pro Einheit: €${totalDisposalPrice.toFixed(2)}`;
-        document.getElementById('totalDisposalPrice').innerHTML = `EK Gesamt: €${totalDisposalPricePerUnit.toFixed(2)}`;
+        document.getElementById('totalDisposalPricePerUnit').innerHTML = `Preis pro Einheit: €${totalDisposalPricePerUnit.toFixed(2)}`;
+        document.getElementById('totalDisposalPrice').innerHTML = `EK Gesamt: €${totalDisposalPrice.toFixed(2)}`;
 
         return{
             totalDisposalPrice : totalDisposalPrice
