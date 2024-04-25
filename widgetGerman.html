@@ -322,6 +322,8 @@ select:focus {
 
             <label for="marginPercentage">Marge in %:</label>
             <input type="number" id="marginPercentage" name="marginPercentage" required>
+            <label for="transportSalesAdditionalCosts">Einmalige Kosten:</label>
+            <input type="number" id="transportSalesAdditionalCosts" name="transportSalesAdditionalCosts" required step="any" value="0">
 
             <div class="result-section">
                 <h3>Ergebnisse</h3>
@@ -355,7 +357,9 @@ select:focus {
 
     <label for="marginDisposalSales">Marge in %:</label>
     <input type="number" id="marginDisposalSales" name="marginDisposalSales" required step="any">
-
+    <label for="disposalSalesAdditionalCosts">Einmalige Kosten:</label>
+    <input type="number" id="disposalSalesAdditionalCosts" name="disposalSalesAdditionalCosts" required type="any" value="0">
+ 
     
 
 
@@ -567,6 +571,9 @@ select:focus {
         const vehicleType = document.getElementById('vehicleType').value;
         const numberOfVehicles = parseInt(document.getElementById('numberOfVehicles').value);
         
+
+
+
         const vehicleInfo = {
             "3-Achser": { minPrice: 67.50, maxPrice: 72.50, weight: 12 },
             "4-Achser": { minPrice: 77.50, maxPrice: 82.50, weight: 18 },
@@ -580,19 +587,26 @@ select:focus {
 
         const actualPurchasePrice = parseFloat(document.getElementById('actualPurchasePrice').value);
         const marginPercentage = parseFloat(document.getElementById('marginPercentage').value);
+        
     
         const marginAmount = totalPurchasePrice * (marginPercentage / 100);
         const salesPerAmount = perTonPrice * (1 + marginPercentage / 100);
         const totalSalesResult = salesPerAmount * universal;
 
-        document.getElementById('finalPrice').innerHTML = `VK pro Einheit: €${salesPerAmount.toFixed(2)}`;
-        document.getElementById('totalPrice').innerHTML = `VK Gesamt: €${totalSalesResult.toFixed(2)}`;
+        const transportAdditionalCosts = parseFloat(document.getElementById('transportSalesAdditionalCosts').value);
+    const totalSalesResultWithAdditionalCosts = totalSalesResult + transportAdditionalCosts;
+    const salesPerAmountWithAdditionalCosts = totalSalesResultWithAdditionalCosts / universal;
 
-        return {
-            salesPerAmount : salesPerAmount,
-            totalSalesResult : totalSalesResult,
-            marginAmount : marginAmount
-        }
+
+         // Update the display of total price and price per unit with additional costs
+    document.getElementById('totalPrice').innerHTML = `VK Gesamt: €${totalSalesResultWithAdditionalCosts.toFixed(2)}`;
+    document.getElementById('finalPrice').innerHTML = `VK pro Einheit: €${salesPerAmountWithAdditionalCosts.toFixed(2)}`;
+
+    return {
+        salesPerAmount: salesPerAmountWithAdditionalCosts,
+        totalSalesResult: totalSalesResultWithAdditionalCosts,
+        marginAmount: marginAmount
+    }
     }
 
     function showDisposalResults() {
@@ -616,15 +630,20 @@ select:focus {
         const marginAmountDisposalSales = totalDisposalPrice * (marginDisposalSales / 100);
         const disposalSalesPerUnit = (totalDisposalPrice + marginAmountDisposalSales) / convertedAmount;
         const totalDisposalSalesPrice = disposalSalesPerUnit * convertedAmount;
-        document.getElementById('disposalSalesPerUnit').innerHTML = `Entsorgung VK pro Einheit: €${disposalSalesPerUnit.toFixed(2)}`;
-        document.getElementById('disposalSalesResult').innerHTML = `Entsorgung VK Gesamt: €${totalDisposalSalesPrice.toFixed(2)}`;
 
-        return {
-            disposalSalesPerUnit :disposalSalesPerUnit,
-            totalDisposalSalesPrice : totalDisposalSalesPrice,
-            marginAmountDisposalSales : marginAmountDisposalSales
+        const disposalSalesAdditionalCosts = parseFloat(document.getElementById('disposalSalesAdditionalCosts').value);
+    const totalDisposalSalesPriceWithAdditionalCosts = totalDisposalSalesPrice + disposalSalesAdditionalCosts;
+    const disposalSalesPerUnitWithAdditionalCosts = totalDisposalSalesPriceWithAdditionalCosts / convertedAmount;
 
-        }
+        // Update the display of total disposal sales price and disposal sales price per unit with additional costs
+    document.getElementById('disposalSalesResult').innerHTML = `Entsorgung VK Gesamt: €${totalDisposalSalesPriceWithAdditionalCosts.toFixed(2)}`;
+    document.getElementById('disposalSalesPerUnit').innerHTML = `Entsorgung VK pro Einheit: €${disposalSalesPerUnitWithAdditionalCosts.toFixed(2)}`;
+
+    return {
+        disposalSalesPerUnit: disposalSalesPerUnitWithAdditionalCosts,
+        totalDisposalSalesPrice: totalDisposalSalesPriceWithAdditionalCosts,
+        marginAmountDisposalSales: marginAmountDisposalSales
+    }
     
     }
 
