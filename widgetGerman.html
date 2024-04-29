@@ -216,14 +216,23 @@ select:focus {
             <label for="material">Materialauswahl:</label>
             <select id="material" name="material" required>
                 <option value="material1">Oberboden (Humus)</option>
-                <option value="material2">Unterboden (Sand)</option>
-                <option value="material3">Unterboden (Lehm)</option>
-                <option value="material4">Unterboden (Ton)</option>
-                <option value="material5">Unterboden (Schluff)</option>
-                <option value="material6">Schotter</option>
-                <option value="material7">Kies</option>
-                <option value="material8">Sand</option>
-                <option value="material9">Beton (Abbruch)</option>
+                <option value="material2">Boden (Schluff)</option>
+                <option value="material3">Boden (Sand)</option>
+                <option value="material4">Boden (Ton)</option>
+                <option value="material5">Boden (Torf)</option>
+                <option value="material6">Betonabbruch</option>
+                <option value="material7">Asphaltaufbruch</option>
+                <option value="material8">Mischabbruch (Ziegel, Beton, Keramik)</option>
+                <option value="material9">Schottertragschicht STS (Hartgestein)</option>
+                <option value="material10">Sand</option>
+                <option value="material11">Kies</option>
+                <option value="material12">Splitt (Hartgestein)</option>
+                <option value="material13">Schotter (Hartgestein)</option>
+                <option value="material14">RC Material</option>
+                <option value="material15">Mineralbeton (gebunden)</option>
+                <option value="material16">Asphalt (gebunden)</option>
+                <option value="material17">Kalkzementmörtel (gebunden)</option>
+                <option value="material18">Beton aus Kies, Sand, Splitt (gebunden)</option>
             </select>
 
             <label for="given">Maßeinheit Input:</label>
@@ -444,15 +453,27 @@ select:focus {
 
         //material densities
         const materialDensities = {
-            "material1": 1.80,
-            "material2": 1.80,
-            "material3": 1.90,
-            "material4": 2.20,
-            "material5": 2.00,
-            "material6": 1.80,
-            "material7": 1.80,
-            "material8": 1.60,
-            "material9": 2.30
+            "material1": 1.50,
+            "material2": 1.65,
+            "material3": 1.85,
+            "material4": 1.80,
+            "material5": 1.10,
+            "material6": 1.60,
+            "material7": 1.70,
+            "material8": 1.55,
+            "material9": 1.85,
+            "material10": 1.65,
+            "material11": 1.75,
+            "material12": 1.55,
+            "material13": 1.50,
+            "material14": 1.55,
+            "material15": 2.15,
+            "material16": 2.40,
+            "material17": 2.00,
+            "material18": 2.25,
+            
+        
+
         };
 
         const density = materialDensities[material];
@@ -534,11 +555,11 @@ select:focus {
 
         //vehicles and their min max prices
         const vehicleInfo = {
-            "3-Achser": { weight: 12, stundensatz: 65, vk: 75, proMinute: 1.25, beEntladezeit: 15, minPrice: 67.50, maxPrice: 72.50 },
-            "4-Achser": { weight: 18, stundensatz: 75, vk: 85, proMinute: 1.416666667, beEntladezeit: 17, minPrice: 77.50, maxPrice: 82.50 },
-            "5-Achser": { weight: 25, stundensatz: 82, vk: 92, proMinute: 1.533333333, beEntladezeit: 22, minPrice: 87.50, maxPrice: 92.50 },
-            "Hängerzug": { weight: 23, minPrice: 87.50, maxPrice: 92.50 },
-            "Muldenkipper": { weight: 24, stundensatz: 82, vk: 92, proMinute: 1.533333333, beEntladezeit: 22, minPrice: 72.50, maxPrice: 77.50 }
+            "3-Achser": { weight: 12, stundensatz: 65, vk: 75, proMinute: 1.25, beEntladezeit: 15, minPrice: 65, maxPrice: 70 },
+            "4-Achser": { weight: 18, stundensatz: 75, vk: 85, proMinute: 1.416666667, beEntladezeit: 17, minPrice: 75, maxPrice: 80 },
+            "5-Achser": { weight: 25, stundensatz: 82, vk: 92, proMinute: 1.533333333, beEntladezeit: 22, minPrice: 85, maxPrice: 90 },
+            "Hängerzug": { weight: 23, minPrice: 80, maxPrice: 85 },
+            "Muldenkipper": { weight: 24, stundensatz: 82, vk: 92, proMinute: 1.533333333, beEntladezeit: 22, minPrice: 65, maxPrice: 70 }
         };
         
         const minPrice = vehicleInfo[vehicleType].minPrice;
@@ -575,11 +596,11 @@ select:focus {
 
 
         const vehicleInfo = {
-            "3-Achser": { minPrice: 67.50, maxPrice: 72.50, weight: 12 },
-            "4-Achser": { minPrice: 77.50, maxPrice: 82.50, weight: 18 },
-            "5-Achser": { minPrice: 87.50, maxPrice: 92.50, weight: 25 },
-            "Hängerzug": { minPrice: 87.50, maxPrice: 92.50, weight: 23 },
-            "Muldenkipper": { minPrice: 72.50, maxPrice: 77.50, weight: 24 }
+            "3-Achser": { minPrice: 65, maxPrice: 70, weight: 12 },
+            "4-Achser": { minPrice: 75, maxPrice: 80, weight: 18 },
+            "5-Achser": { minPrice: 85, maxPrice: 90, weight: 25 },
+            "Hängerzug": { minPrice: 80, maxPrice: 85, weight: 23 },
+            "Muldenkipper": { minPrice: 65, maxPrice: 70, weight: 24 }
         };
 
         const minPrice = vehicleInfo[vehicleType].minPrice;
