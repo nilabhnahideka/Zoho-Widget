@@ -496,7 +496,7 @@ select:focus {
 
         const unit = wanted === 'mass' ? 'Tonnen' : 'Kubikmeter';
 
-        document.getElementById('densityResult').innerHTML = `Dichte: ${density} kg/m³`;
+        document.getElementById('densityResult').innerHTML = `Dichte: ${density.toFixed(2)} kg/m³`;
         document.getElementById('convertedAmountResult').innerHTML = `${convertedAmountLabel}: ${convertedAmount.toFixed(2)} (${unit})`;
 
         if (convertedAmountLabel === 'Volume') {
