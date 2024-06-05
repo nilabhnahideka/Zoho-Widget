@@ -215,41 +215,24 @@ select:focus {
             <h3>Material</h3>
             <label for="material">Materialauswahl:</label>
             <select id="material" name="material" required>
-                <option value="material18">Oberboden (Humus)</option>
-                <option value="material19">Boden (Schluff)</option>
-                <option value="material20">Boden (Sand)</option>
-                <option value="material21">Boden (Ton)</option>
-                <option value="material22">Boden (Torf)</option>
-                <option value="material23">Betonabbruch</option>
-                <option value="material24">Asphaltaufbruch</option>
-                <option value="material25">Mischabbruch (Ziegel, Beton, Keramik)</option>
-                <option value="material26">Schottertragschicht STS (Hartgestein)</option>
-                <option value="material27">Sand</option>
-                <option value="material28">Kies</option>
-                <option value="material29">Splitt (Hartgestein)</option>
-                <option value="material30">Schotter (Hartgestein)</option>
-                <option value="material31">RC Material</option>
-                <option value="material32">Mineralbeton (gebunden)</option>
-                <option value="material33">Asphalt (gebunden)</option>
-                <option value="material34">Kalkzementmörtel (gebunden)</option>
-                <option value="material35">Beton aus Kies, Sand, Splitt (gebunden)</option>
-                <option value="material1">Sand 0-2</option>
-                <option value="material2">Kies 2-8</option>
-                <option value="material3">Kies 8-16</option>
-                <option value="material4">Kies 8-32</option>
-                <option value="material5">Kiessand 0-32</option>
-                <option value="material6">Kalksteinschotter 32-45</option>
-                <option value="material7">Kalksteinschotter 45-56</option>
-                <option value="material8">Kalksteinsplitt 5-32</option>
-                <option value="material9">Naturstein 0-200</option>
-                <option value="material10">Felsgestein</option>
-                <option value="material11">Siebschutt</option>
-                <option value="material12">Schottertragschicht STS (Hartgestein)</option>
-                <option value="material13">Frotschutzschicht FSS (Hartgestein)</option>
-                <option value="material14">Bituminöse Tragschicht</option>
-                <option value="material15">Bituminöse Deckschicht</option>
-                <option value="material16">Bituminös Binder</option>
-                <option value="material17">Bituminös Gussasphalt</option>
+                <option value="material1">Oberboden (Humus)</option>
+                <option value="material2">Boden (Schluff)</option>
+                <option value="material3">Boden (Sand)</option>
+                <option value="material4">Boden (Ton)</option>
+                <option value="material5">Boden (Torf)</option>
+                <option value="material6">Betonabbruch</option>
+                <option value="material7">Asphaltaufbruch</option>
+                <option value="material8">Mischabbruch (Ziegel, Beton, Keramik)</option>
+                <option value="material9">Schottertragschicht STS (Hartgestein)</option>
+                <option value="material10">Sand</option>
+                <option value="material11">Kies</option>
+                <option value="material12">Splitt (Hartgestein)</option>
+                <option value="material13">Schotter (Hartgestein)</option>
+                <option value="material14">RC Material</option>
+                <option value="material15">Mineralbeton (gebunden)</option>
+                <option value="material16">Asphalt (gebunden)</option>
+                <option value="material17">Kalkzementmörtel (gebunden)</option>
+                <option value="material18">Beton aus Kies, Sand, Splitt (gebunden)</option>
             </select>
 
             <label for="given">Maßeinheit Input:</label>
@@ -470,45 +453,24 @@ select:focus {
 
         //material densities
         const materialDensities = {
-            "material1": 1.56,
-            "material2": 1.70,
-            "material3": 1.78,
-            "material4": 1.78,
-            "material5": 1.72,
-            "material6": 1.52,
-            "material7": 1.52,
-            "material8": 1.56,
-            "material9": 1.75,
-            "material10": 1.70,
-            "material11": 1.80,
-            "material12": 1.85,
-            "material13": 1.85,
-            "material14": 2.36,
-            "material15": 2.39,
-            "material16": 2.36,
-            "material17": 2.45,
-            "material18": 1.50,
-            "material19": 1.65,
-            "material20": 1.85,
-            "material21": 1.80,
-            "material22": 1.10,
-            "material23": 1.60,
-            "material24": 1.70,
-            "material25": 1.55,
-            "material26": 1.85,
-            "material27": 1.65,
-            "material28": 1.75,
-            "material29": 1.55,
-            "material30": 1.50,
-            "material31": 1.55,
-            "material32": 2.15,
-            "material33": 2.40,
-            "material34": 2.00,
-            "material35": 2.25,
-
-            
-        
-
+            "material1": 1.50,
+            "material2": 1.65,
+            "material3": 1.85,
+            "material4": 1.80,
+            "material5": 1.10,
+            "material6": 1.60,
+            "material7": 1.70,
+            "material8": 1.55,
+            "material9": 1.85,
+            "material10": 1.65,
+            "material11": 1.75,
+            "material12": 1.55,
+            "material13": 1.50,
+            "material14": 1.55,
+            "material15": 1.70,
+            "material16": 2.40,
+            "material17": 2.00,
+            "material18": 2.25
         };
 
         const density = materialDensities[material];
